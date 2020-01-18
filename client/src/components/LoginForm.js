@@ -50,7 +50,7 @@ class LoginForm extends React.Component {
         />
         <button type="submit">Login</button>
         <div className="form-group">
-          <Link to="/sign_in">Sign in</Link>
+          <Link to="/sign_in">Sign up</Link>
         </div>
       </form>
     );
