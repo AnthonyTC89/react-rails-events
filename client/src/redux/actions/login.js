@@ -1,7 +1,7 @@
-const LOGIN = 'LOGIN';
+export const type = 'LOGIN';
 const login = (user) => (
   {
-    type: LOGIN,
+    type,
     user,
   }
 );

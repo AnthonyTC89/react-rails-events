@@ -1,7 +1,7 @@
-const LOGOUT = 'LOGOUT';
+export const type = 'LOGOUT';
 const logout = (user) => (
   {
-    type: LOGOUT,
+    type,
     user,
   }
 );

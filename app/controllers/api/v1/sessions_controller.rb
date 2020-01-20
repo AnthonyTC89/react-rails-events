@@ -1,10 +1,10 @@
 module Api::V1
-  class SessionController < ApplicationController
-    #include SessionHelper
+  class SessionsController < ApplicationController
+    include SessionHelper
     def create
       @user = User.find_by(email: session_params[:email])
       if @user && @user.authenticate(session_params[:password])
-        login!
+        # login!
         render json: {
           logged_in: true,
           user: @user

@@ -1,9 +1,11 @@
+/* eslint-disable react/forbid-prop-types */
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import login from '../redux/actions/login';
+import loginStatus from '../redux/actions/loginStatus';
 
 
 import 'bootstrap/dist/css/bootstrap.css';
@@ -19,6 +21,11 @@ class SigninForm extends React.Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+  }
+
+  componentDidMount() {
+    const { checkLoginStatus } = this.props;
+    checkLoginStatus();
   }
 
   handleChange(e) {
@@ -56,8 +63,10 @@ class SigninForm extends React.Component {
 
   render() {
     const { email, password, confirmation } = this.state;
+    const { session } = this.props;
     return (
       <form onSubmit={this.handleSubmit}>
+        {session.user.username}
         <input
           className="form-control"
           onChange={this.handleChange}
@@ -96,6 +105,8 @@ class SigninForm extends React.Component {
 
 SigninForm.propTypes = {
   addSession: PropTypes.func.isRequired,
+  checkLoginStatus: PropTypes.func.isRequired,
+  session: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -104,6 +115,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   addSession: (user) => dispatch(login(user)),
+  checkLoginStatus: () => dispatch(loginStatus()),
 });
 
 const SigninWrapper = connect(mapStateToProps, mapDispatchToProps)(SigninForm);
