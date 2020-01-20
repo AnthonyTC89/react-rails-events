@@ -1,6 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import axios from 'axios';
+import login from '../redux/actions/login';
+
+
 import 'bootstrap/dist/css/bootstrap.css';
 import './Form.css';
 
@@ -25,23 +30,24 @@ class SigninForm extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     const { email, password } = this.state;
+    const { addSession } = this.props;
     const data = {
       user: {
-        name: 'default',
+        username: email,
         email,
-        encrypted_password: password,
+        password,
+        password_confirmation: password,
         status: 2,
       },
     };
-    console.log(data);
     axios.post('/api/v1/users', data)
       .then((response) => {
-        console.log(response);
         this.setState({
           email: '',
           password: '',
           confirmation: '',
         });
+        addSession(response.data);
       })
       .catch((error) => {
         console.log('error: ', error);
@@ -87,4 +93,19 @@ class SigninForm extends React.Component {
     );
   }
 }
-export default SigninForm;
+
+SigninForm.propTypes = {
+  addSession: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  session: state.session,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  addSession: (user) => dispatch(login(user)),
+});
+
+const SigninWrapper = connect(mapStateToProps, mapDispatchToProps)(SigninForm);
+
+export default SigninWrapper;

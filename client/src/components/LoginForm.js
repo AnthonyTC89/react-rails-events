@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import login from '../redux/actions/login';
 import 'bootstrap/dist/css/bootstrap.css';
 import './Form.css';
 
@@ -56,4 +58,14 @@ class LoginForm extends React.Component {
     );
   }
 }
-export default LoginForm;
+
+const mapStateToProps = (state) => ({
+  session: state.session,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  newSession: (user) => dispatch(login(user)),
+});
+
+const LoginWrapper = connect(mapStateToProps, mapDispatchToProps)(LoginForm);
+export default LoginWrapper;
