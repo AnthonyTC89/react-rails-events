@@ -80,6 +80,9 @@ class LoginForm extends React.Component {
         />
         <button type="submit">Login</button>
         <div className="form-group">
+          {/* <Spinner animation="border" role="status">
+            <span className="sr-only">Loading...</span>
+          </Spinner> */}
           <span>{errors}</span>
         </div>
         <div className="form-group">
