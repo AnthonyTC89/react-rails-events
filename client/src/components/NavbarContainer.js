@@ -25,6 +25,14 @@ class NavbarContainer extends React.Component {
 
   render() {
     const { session } = this.props;
+    let NavAdmin = null;
+    if (session.isLoggedIn && session.user.status === 1) {
+      NavAdmin = <NavDropdown.Item>Admin</NavDropdown.Item>;
+    }
+    let NavSuperUser = null;
+    if (session.isLoggedIn && (session.user.status === 1 || session.user.status === 2)) {
+      NavSuperUser = <Nav.Link href="#newEvents">Create Events</Nav.Link>;
+    }
     return (
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -32,7 +40,9 @@ class NavbarContainer extends React.Component {
           Dashboard /
           {session.user.username}
         </Navbar.Brand>
+        {NavSuperUser}
         <NavDropdown title="Account" id="collasible-nav-dropdown">
+          {NavAdmin}
           <NavDropdown.Item>Profile</NavDropdown.Item>
           <NavDropdown.Divider />
           <NavDropdown.Item onClick={this.handleLogout}>Logout</NavDropdown.Item>

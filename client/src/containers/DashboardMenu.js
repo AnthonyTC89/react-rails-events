@@ -17,6 +17,8 @@ class DashboardMenu extends React.Component {
   }
 
   handleClick(e) {
+    const { checkLoginStatus } = this.props;
+    checkLoginStatus();
     // const { showPage } = this.props;
     console.log(e.target.name);
     // showPage(e.target.name);
