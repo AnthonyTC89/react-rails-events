@@ -43,7 +43,7 @@ class LoginForm extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const { addSession } = this.props;
+    const { addSession, history } = this.props;
     const { email, password } = this.state;
     const user = { email, password };
 
@@ -52,6 +52,8 @@ class LoginForm extends React.Component {
         if (response.data.logged_in) {
           console.log('LOGIN-DATA: ', response.data);
           addSession(response.data.user);
+          console.log(history);
+          history.push('/dashboard');
         } else {
           this.setState({
             errors: response.data.errors,
@@ -62,7 +64,7 @@ class LoginForm extends React.Component {
   }
 
   render() {
-    const { session } = this.props;
+    const { session, history } = this.props;
     const { email, password, errors } = this.state;
     console.log('session: ', session);
     return (
@@ -94,6 +96,9 @@ class LoginForm extends React.Component {
           <Link to="/sign_in">Sign up</Link>
           {session.isLoggedIn ? <Link onClick={this.handleLogout} to="/logout">Logout</Link> : null}
         </div>
+        <div className="form-group">
+          <button type="button" onClick={() => history.push('/dashboard')}>Dashboard</button>
+        </div>
       </form>
     );
   }
@@ -104,6 +109,7 @@ LoginForm.propTypes = {
   closeSession: PropTypes.func.isRequired,
   checkLoginStatus: PropTypes.func.isRequired,
   session: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({

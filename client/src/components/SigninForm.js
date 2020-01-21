@@ -7,8 +7,6 @@ import axios from 'axios';
 import login from '../redux/actions/login';
 import logout from '../redux/actions/logout';
 import loginStatus from '../redux/actions/loginStatus';
-
-
 import 'bootstrap/dist/css/bootstrap.css';
 import './Form.css';
 
@@ -105,9 +103,9 @@ class SigninForm extends React.Component {
 }
 
 SigninForm.propTypes = {
+  session: PropTypes.object.isRequired,
   addSession: PropTypes.func.isRequired,
   checkLoginStatus: PropTypes.func.isRequired,
-  session: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({

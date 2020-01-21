@@ -2,9 +2,10 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import LoginWrapper from '../components/LoginForm';
-import SigninForm from '../components/SigninForm';
 import store from '../redux/store';
+import LoginWrapper from '../components/LoginForm';
+import SigninWrapper from '../components/SigninForm';
+import DashboardWrapper from './Dashboard';
 import './App.css';
 
 const App = () => (
@@ -12,8 +13,9 @@ const App = () => (
     <BrowserRouter>
       <Switch>
         <Route path="/login" component={LoginWrapper} />
-        <Route path="/sign_in" component={SigninForm} />
-        <Redirect from="/" to="/sign_in" />
+        <Route path="/sign_in" component={SigninWrapper} />
+        <Route path="/dashboard" component={DashboardWrapper} />
+        <Redirect from="/" to="/login" />
       </Switch>
     </BrowserRouter>
   </Provider>
