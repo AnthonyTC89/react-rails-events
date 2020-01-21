@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import loginStatus from '../redux/actions/loginStatus';
+import NavbarContainer from '../components/NavbarContainer';
 
 class Dashboard extends React.Component {
   componentDidMount() {
@@ -13,13 +14,12 @@ class Dashboard extends React.Component {
 
   render() {
     const { session } = this.props;
+    if (!session.isLoggedIn) {
+      return <Redirect to="/login" />;
+    }
     return (
       <div>
-        {session.isLoggedIn ? <Redirect from="/dashboard" to="/login" /> : null}
-        hola que hace
-        {/* <Navbar />
-        <LastEvents />
-        <MenuIcons /> */}
+        <NavbarContainer />
       </div>
     );
   }

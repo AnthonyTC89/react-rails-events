@@ -20,25 +20,20 @@ class LoginForm extends React.Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.handleLogout = this.handleLogout.bind(this);
   }
 
   componentDidMount() {
-    const { checkLoginStatus } = this.props;
+    const { checkLoginStatus, session, history } = this.props;
     checkLoginStatus();
+    if (session.isLoggedIn) {
+      history.push('/dashboard');
+    }
   }
 
   handleChange(e) {
     this.setState({
       [e.target.name]: e.target.value,
     });
-  }
-
-  handleLogout(e) {
-    e.preventDefault();
-    const { session, closeSession } = this.props;
-    const { user } = session;
-    closeSession(user);
   }
 
   handleSubmit(e) {
@@ -50,9 +45,7 @@ class LoginForm extends React.Component {
     axios.post('api/v1/login', { user }, { withCredentials: true })
       .then((response) => {
         if (response.data.logged_in) {
-          console.log('LOGIN-DATA: ', response.data);
           addSession(response.data.user);
-          console.log(history);
           history.push('/dashboard');
         } else {
           this.setState({
@@ -64,12 +57,9 @@ class LoginForm extends React.Component {
   }
 
   render() {
-    const { session, history } = this.props;
     const { email, password, errors } = this.state;
-    console.log('session: ', session);
     return (
       <form onSubmit={this.handleSubmit} className="form">
-        {session.user.username}
         <input
           className="form-control"
           onChange={this.handleChange}
@@ -94,10 +84,6 @@ class LoginForm extends React.Component {
         </div>
         <div className="form-group">
           <Link to="/sign_in">Sign up</Link>
-          {session.isLoggedIn ? <Link onClick={this.handleLogout} to="/logout">Logout</Link> : null}
-        </div>
-        <div className="form-group">
-          <button type="button" onClick={() => history.push('/dashboard')}>Dashboard</button>
         </div>
       </form>
     );
@@ -106,7 +92,6 @@ class LoginForm extends React.Component {
 
 LoginForm.propTypes = {
   addSession: PropTypes.func.isRequired,
-  closeSession: PropTypes.func.isRequired,
   checkLoginStatus: PropTypes.func.isRequired,
   session: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,

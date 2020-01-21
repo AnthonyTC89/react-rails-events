@@ -23,8 +23,11 @@ class SigninForm extends React.Component {
   }
 
   componentDidMount() {
-    const { checkLoginStatus } = this.props;
+    const { checkLoginStatus, session, history } = this.props;
     checkLoginStatus();
+    if (session.isLoggedIn) {
+      history.push('/dashboard');
+    }
   }
 
   handleChange(e) {
@@ -62,10 +65,8 @@ class SigninForm extends React.Component {
 
   render() {
     const { email, password, confirmation } = this.state;
-    const { session } = this.props;
     return (
       <form onSubmit={this.handleSubmit}>
-        {session.user.username}
         <input
           className="form-control"
           onChange={this.handleChange}
@@ -106,6 +107,7 @@ SigninForm.propTypes = {
   session: PropTypes.object.isRequired,
   addSession: PropTypes.func.isRequired,
   checkLoginStatus: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
