@@ -1,10 +1,10 @@
 module Api::V1
   class SessionsController < ApplicationController
-    include SessionHelper
+    #include SessionHelper
     def create
       @user = User.find_by(email: session_params[:email])
       if @user && @user.authenticate(session_params[:password])
-        # login!
+        @user.regenerate_auth_token
         render json: {
           logged_in: true,
           user: @user
@@ -32,7 +32,8 @@ module Api::V1
     end
 
     def destroy
-        logout!
+      @user = User.find_by(email: session_params[:email])
+      @user.regenerate_auth_token
         render json: {
           status: 200,
           logged_out: true

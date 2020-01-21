@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import login from '../redux/actions/login';
+import logout from '../redux/actions/logout';
 import loginStatus from '../redux/actions/loginStatus';
 
 
@@ -115,6 +116,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   addSession: (user) => dispatch(login(user)),
+  closeSession: (user) => dispatch(logout(user)),
   checkLoginStatus: () => dispatch(loginStatus()),
 });
 
