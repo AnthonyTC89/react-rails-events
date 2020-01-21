@@ -1,4 +1,4 @@
-const defaultState = {
+const defaultSession = {
   user: {
     id: 0,
     username: 'default',
@@ -8,15 +8,15 @@ const defaultState = {
   isLoggedIn: false,
 };
 
-const session = (state = defaultState, { type, user }) => {
+const session = (state = defaultSession, { type, user }) => {
   switch (type) {
     case 'LOGIN':
+      console.log('type: ', type, 'user: ', user);
       return {
         user,
         isLoggedIn: true,
       };
     case 'LOGIN_STATUS':
-      console.log('cheking status!!!');
       // axios.get('api/v1/logged_in', { withCredentials: true })
       //   .then((response) => {
       //     console.log('LOGIN_STATUS: ', response);
@@ -25,15 +25,16 @@ const session = (state = defaultState, { type, user }) => {
       //   .catch((error) => console.log('api errors:', error));
       return state;
     case 'LOGOUT':
+      console.log('type: ', type, 'user: ', user);
       // axios.delete('api/v1/logout', { user }, { withCredentials: true })
       //   .then((response) => {
       //     console.log('LOGOUT: ', response);
       //     return defaultState;
       //   })
       //   .catch((error) => console.log('api errors:', error));
-      return defaultState;
+      return defaultSession;
     default:
-      return defaultState;
+      return state;
   }
 };
 

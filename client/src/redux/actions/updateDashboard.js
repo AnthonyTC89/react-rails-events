@@ -1,8 +1,8 @@
-export const type = 'UPDATE';
-const updateDashboard = (component) => (
+export const type = 'UPDATE_DASHBOARD';
+const updateDashboard = (name) => (
   {
     type,
-    component,
+    name,
   }
 );
 

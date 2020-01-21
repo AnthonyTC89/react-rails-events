@@ -17,15 +17,15 @@ class Dashboard extends React.Component {
   }
 
   render() {
-    const { session, Component } = this.props;
-
+    const { session, dashboardState } = this.props;
+    console.log(dashboardState);
     if (!session.isLoggedIn) {
       return <Redirect to="/login" />;
     }
     return (
       <div>
         <NavbarContainer />
-        <Component.name />
+        <dashboardState.name />
       </div>
     );
   }
@@ -34,12 +34,12 @@ class Dashboard extends React.Component {
 Dashboard.propTypes = {
   checkLoginStatus: PropTypes.func.isRequired,
   session: PropTypes.object.isRequired,
-  Component: PropTypes.object.isRequired,
+  dashboardState: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   session: state.session,
-  Component: state.dashboard,
+  dashboardState: state.dashboardReducer,
 });
 
 const mapDispatchToProps = (dispatch) => ({
