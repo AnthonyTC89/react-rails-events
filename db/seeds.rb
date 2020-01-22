@@ -5,6 +5,10 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-User.create(username:'admin', email:'ptonyptc@gmail.com', password:'admin123', password_confirmation:'admin123', status:1 )
-User.create(username:'anthony', email:'ptonyp19@hotmail.com', password:'123456', password_confirmation:'123456', status:2 )
-User.create(username:'user', email:'user@gmail.com', password:'123456', password_confirmation:'123456', status:3 )
+User.create(username:'admin', email:'ptonyptc@gmail.com', password:'123', password_confirmation:'123', status:1 )
+User.create(username:'anthony', email:'ptonyp19@hotmail.com', password:'123', password_confirmation:'123', status:2 )
+User.create(username:'user0', email:'user0@gmail.com', password:'123', password_confirmation:'123', status:0 )
+User.create(username:'user1', email:'user1@gmail.com', password:'123', password_confirmation:'123', status:3 )
+User.create(username:'user2', email:'user2@gmail.com', password:'123', password_confirmation:'123', status:3 )
+User.create(username:'user3', email:'user3@gmail.com', password:'123', password_confirmation:'123', status:3 )
+User.create(username:'user4', email:'user4@gmail.com', password:'123', password_confirmation:'123', status:4 )

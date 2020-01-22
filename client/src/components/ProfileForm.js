@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
-import { Image } from 'react-bootstrap';
+import { Image, Button } from 'react-bootstrap';
 import loginStatus from '../redux/actions/loginStatus';
 import updateSession from '../redux/actions/updateSession';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -25,6 +25,8 @@ class ProfileForm extends React.Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleUpgrade = this.handleUpgrade.bind(this);
+    this.upgradeUser = this.upgradeUser.bind(this);
   }
 
   componentDidMount() {
@@ -38,9 +40,38 @@ class ProfileForm extends React.Component {
     });
   }
 
+  async upgradeUser(user) {
+    const { updateUserSession } = this.props;
+    return axios.put(`api/v1/users/${user.id}`, { user }, { withCredentials: true })
+      .then((response) => {
+        this.setState({
+          username: response.data.username,
+          password: '',
+          confirmation: '',
+          status: response.data.status,
+          // errors: '',
+        });
+        updateUserSession(response.data);
+      })
+      .catch((error) => console.log('api errors: ', error));
+  }
+
+  handleUpgrade() {
+    const { session } = this.props;
+    const { id, username, email, password, confirmation } = session.user;
+    const user = {
+      id,
+      username,
+      email,
+      password,
+      password_confirmation: confirmation,
+      status: 4,
+    };
+    return this.upgradeUser(user);
+  }
+
   handleSubmit(e) {
     e.preventDefault();
-    const { updateUser } = this.props;
     const { id, username, email, password, confirmation, status } = this.state;
     const user = {
       id,
@@ -50,23 +81,23 @@ class ProfileForm extends React.Component {
       password_confirmation: confirmation,
       status,
     };
-    axios.put(`api/v1/users/${user.id}`, { user }, { withCredentials: true })
-      .then((response) => {
-        this.setState({
-          password: '',
-          confirmation: '',
-          // errors: '',
-        });
-        updateUser(response.data);
-      })
-      .catch((error) => console.log('api errors: ', error));
+    return this.upgradeUser(user);
   }
 
   render() {
-    const { username, email, password, confirmation } = this.state;
+    const { username, email, password, confirmation, status } = this.state;
     const hash = CryptoJS.MD5(email);
     const url = `http://www.gravatar.com/avatar/${hash}`;
     const gravatar = 'https://en.gravatar.com/site/login';
+    const btnUpgrade = status === 3 ? (
+      <Button
+        variant="primary"
+        onClick={this.handleUpgrade}
+      >
+        UPGRADE
+      </Button>
+    ) : null;
+
     return (
       <form onSubmit={this.handleSubmit}>
         <a href={gravatar} target="_blank" rel="noopener noreferrer">
@@ -109,14 +140,16 @@ class ProfileForm extends React.Component {
           required
         />
         <button type="submit">Update</button>
+        {btnUpgrade}
       </form>
     );
   }
 }
+
 ProfileForm.propTypes = {
   session: PropTypes.object.isRequired,
   checkLoginStatus: PropTypes.func.isRequired,
-  updateUser: PropTypes.func.isRequired,
+  updateUserSession: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -125,7 +158,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   checkLoginStatus: () => dispatch(loginStatus()),
-  updateUser: (user) => dispatch(updateSession(user)),
+  updateUserSession: (user) => dispatch(updateSession(user)),
 });
 
 const ProfileWrapper = connect(mapStateToProps, mapDispatchToProps)(ProfileForm);

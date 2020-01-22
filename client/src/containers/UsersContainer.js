@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
 import loginStatus from '../redux/actions/loginStatus';
-import User from '../components/User';
+import UserInfo from '../components/UserInfo';
 
 class UsersContainer extends React.Component {
   constructor(props) {
@@ -36,7 +36,7 @@ class UsersContainer extends React.Component {
     const { users } = this.state;
     return (
       <div className="container">
-        {users.map((user) => <User key={user.id} user={user} />)}
+        {users.map((user) => <UserInfo key={user.id} user={user} />)}
       </div>
     );
   }
