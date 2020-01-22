@@ -34,7 +34,7 @@ class NavbarContainer extends React.Component {
     const { session } = this.props;
     let NavAdmin = null;
     if (session.isLoggedIn && session.user.status === 1) {
-      NavAdmin = <NavDropdown.Item onClick={() => this.handleClick('ProfileForm')}>Admin</NavDropdown.Item>;
+      NavAdmin = <NavDropdown.Item onClick={() => this.handleClick('UsersContainer')}>Admin</NavDropdown.Item>;
     }
     let NavSuperUser = null;
     if (session.isLoggedIn && (session.user.status === 1 || session.user.status === 2)) {

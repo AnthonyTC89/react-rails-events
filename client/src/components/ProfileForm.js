@@ -3,6 +3,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import CryptoJS from 'crypto-js';
+import { Image } from 'react-bootstrap';
 import loginStatus from '../redux/actions/loginStatus';
 import updateSession from '../redux/actions/updateSession';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -62,8 +64,14 @@ class ProfileForm extends React.Component {
 
   render() {
     const { username, email, password, confirmation } = this.state;
+    const hash = CryptoJS.MD5(email);
+    const url = `http://www.gravatar.com/avatar/${hash}`;
+    const gravatar = 'https://en.gravatar.com/site/login';
     return (
       <form onSubmit={this.handleSubmit}>
+        <a href={gravatar} target="_blank" rel="noopener noreferrer">
+          <Image src={url} roundedCircle />
+        </a>
         <input
           className="form-control"
           onChange={this.handleChange}
