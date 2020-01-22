@@ -2,8 +2,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import axios from 'axios';
+import axios from 'axios';
 import loginStatus from '../redux/actions/loginStatus';
+import updateSession from '../redux/actions/updateSession';
 import 'bootstrap/dist/css/bootstrap.css';
 import './Form.css';
 
@@ -12,10 +13,12 @@ class ProfileForm extends React.Component {
     super(props);
     const { session } = props;
     this.state = {
+      id: session.user.id,
       username: session.user.username,
       email: session.user.email,
       password: '',
       confirmation: '',
+      status: session.user.status,
       // errors: '',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -35,34 +38,26 @@ class ProfileForm extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    // const { addSession, history } = this.props;
-    const { username, email, password, confirmation } = this.state;
+    const { updateUser } = this.props;
+    const { id, username, email, password, confirmation, status } = this.state;
     const user = {
+      id,
       username,
       email,
       password,
       password_confirmation: confirmation,
+      status,
     };
-    console.log(user);
-    this.setState({
-      username,
-      email,
-      password: '',
-      confirmation: '',
-      // errors: '',
-    });
-    // axios.post('api/v1/login', { user }, { withCredentials: true })
-    //   .then((response) => {
-    //     if (response.data.logged_in) {
-    //       addSession(response.data.user);
-    //       history.push('/dashboard');
-    //     } else {
-    //       this.setState({
-    //         errors: response.data.errors,
-    //       });
-    //     }
-    //   })
-    //   .catch((error) => console.log('api errors: ', error));
+    axios.put(`api/v1/users/${user.id}`, { user }, { withCredentials: true })
+      .then((response) => {
+        this.setState({
+          password: '',
+          confirmation: '',
+          // errors: '',
+        });
+        updateUser(response.data);
+      })
+      .catch((error) => console.log('api errors: ', error));
   }
 
   render() {
@@ -80,12 +75,12 @@ class ProfileForm extends React.Component {
         />
         <input
           className="form-control"
-          onChange={this.handleChange}
           type="text"
           placeholder="email"
           value={email}
           name="email"
           required
+          disabled
         />
         <input
           className="form-control"
@@ -113,6 +108,7 @@ class ProfileForm extends React.Component {
 ProfileForm.propTypes = {
   session: PropTypes.object.isRequired,
   checkLoginStatus: PropTypes.func.isRequired,
+  updateUser: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -121,6 +117,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   checkLoginStatus: () => dispatch(loginStatus()),
+  updateUser: (user) => dispatch(updateSession(user)),
 });
 
 const ProfileWrapper = connect(mapStateToProps, mapDispatchToProps)(ProfileForm);

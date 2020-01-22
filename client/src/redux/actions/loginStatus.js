@@ -1,8 +1,4 @@
 export const type = 'LOGIN_STATUS';
-const login = () => (
-  {
-    type,
-  }
-);
+const loginStatus = (user) => ({ type, user });
 
-export default login;
+export default loginStatus;

@@ -18,7 +18,6 @@ class Dashboard extends React.Component {
 
   render() {
     const { session, dashboardState } = this.props;
-    console.log(dashboardState);
     if (!session.isLoggedIn) {
       return <Redirect to="/login" />;
     }
