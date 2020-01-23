@@ -4,40 +4,30 @@ import DashboardMenu from '../../containers/DashboardMenu';
 import ProfileForm from '../../components/ProfileForm';
 import UsersContainer from '../../containers/UsersContainer';
 import EventForm from '../../components/EventForm';
-import EventsContainer from '../../containers/EventsContainer';
+import AllEventsContainer from '../../containers/AllEventsContainer';
+import MyEventsContainer from '../../containers/MyEventsContainer';
+import UpcomingEventsContainer from '../../containers/UpcomingEventsContainer';
 
 const defaultDashboard = {
   Component: ProfileForm,
-  arg: '',
-  changed: true,
 };
 
 const dashboard = (state = defaultDashboard, action) => {
   switch (action.Component) {
     case 'DashboardMenu':
-      console.log(action);
-      return { ...state, Component: DashboardMenu };
+      return { Component: DashboardMenu };
     case 'ProfileForm':
-      console.log(action);
-      return { ...state, Component: ProfileForm };
+      return { Component: ProfileForm };
     case 'UsersContainer':
-      console.log(action);
-      return { ...state, Component: UsersContainer };
+      return { Component: UsersContainer };
     case 'EventForm':
-      console.log(action);
-      return { ...state, Component: EventForm };
-    case 'EventsContainer':
-      console.log(action);
-      return { ...state, Component: EventsContainer };
-    case 'EventsContainerAll':
-      console.log(action);
-      return { ...state, Component: EventsContainer, arg: 'All' };
-    case 'EventsContainerMyEvents':
-      console.log(action);
-      return { ...state, Component: EventsContainer, arg: 'MyEvents' };
-    case 'EventsContainerUpcoming':
-      console.log(action);
-      return { ...state, Component: EventsContainer, arg: 'Upcoming', changed: !state.changed };
+      return { Component: EventForm };
+    case 'AllEventsContainer':
+      return { Component: AllEventsContainer };
+    case 'MyEventsContainer':
+      return { Component: MyEventsContainer };
+    case 'UpcomingEventsContainer':
+      return { Component: UpcomingEventsContainer };
     default:
       return state;
   }
