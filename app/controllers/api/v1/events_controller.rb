@@ -4,7 +4,15 @@ module Api::V1
 
     # GET /events
     def index
-      @events = Event.all
+      if params[:user_id]
+        @events = Event.where(user_id: params[:user_id])
+      elsif params[:date]
+        p "params[:date] >>>> #{params[:date]}"
+        @events = Event.where("date >= ?", params[:date])
+      else
+        @events = Event.all
+      end
+      
       render json: @events
     end
 

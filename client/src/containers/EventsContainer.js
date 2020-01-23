@@ -12,20 +12,37 @@ class EventsContainer extends React.Component {
     this.state = {
       events: [],
     };
-    this.getAllEvents = this.getAllEvents.bind(this);
-    this.setStateDeafult = this.setStateDeafult.bind(this);
+    switch (props.arg) {
+      case 'All':
+        this.getAllEvents();
+        break;
+      case 'MyEvents':
+        this.getMyEvents();
+        break;
+      case 'Upcoming':
+        this.getUpcomingEvents();
+        break;
+      default:
+        this.setStateDeafult();
+    }
   }
 
   componentDidMount() {
     const { checkLoginStatus, arg } = this.props;
     checkLoginStatus();
-    switch (arg) {
-      case 'All':
-        this.getAllEvents();
-        break;
-      default:
-        this.setStateDeafult();
-    }
+    // switch (arg) {
+    //   case 'All':
+    //     this.getAllEvents();
+    //     break;
+    //   case 'MyEvents':
+    //     this.getMyEvents();
+    //     break;
+    //   case 'Upcoming':
+    //     this.getUpcomingEvents();
+    //     break;
+    //   default:
+    //     this.setStateDeafult();
+    // }
   }
 
   setStateDeafult() {
@@ -36,6 +53,30 @@ class EventsContainer extends React.Component {
 
   getAllEvents() {
     axios.get('/api/v1/events', { withCredentials: true })
+      .then((response) => {
+        this.setState({
+          events: response.data,
+        });
+      })
+      .catch((error) => console.log('api errors:', error));
+  }
+
+  getUpcomingEvents() {
+    const params = { date: new Date() };
+    console.log(params);
+    axios.get('/api/v1/events', { params }, { withCredentials: true })
+      .then((response) => {
+        this.setState({
+          events: response.data,
+        });
+      })
+      .catch((error) => console.log('api errors:', error));
+  }
+
+  getMyEvents() {
+    const { session } = this.props;
+    const params = { user_id: session.user.id };
+    axios.get('/api/v1/events', { params }, { withCredentials: true })
       .then((response) => {
         this.setState({
           events: response.data,
@@ -57,6 +98,7 @@ class EventsContainer extends React.Component {
 EventsContainer.propTypes = {
   checkLoginStatus: PropTypes.func.isRequired,
   arg: PropTypes.string,
+  session: PropTypes.object.isRequired,
 };
 
 EventsContainer.defaultProps = {

@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable no-unused-vars */
 import DashboardMenu from '../../containers/DashboardMenu';
 import ProfileForm from '../../components/ProfileForm';
@@ -6,24 +7,37 @@ import EventForm from '../../components/EventForm';
 import EventsContainer from '../../containers/EventsContainer';
 
 const defaultDashboard = {
-  Component: EventsContainer,
-  arg: 'All',
+  Component: ProfileForm,
+  arg: '',
+  changed: true,
 };
 
 const dashboard = (state = defaultDashboard, action) => {
   switch (action.Component) {
     case 'DashboardMenu':
-      return { Component: DashboardMenu };
+      console.log(action);
+      return { ...state, Component: DashboardMenu };
     case 'ProfileForm':
-      return { Component: ProfileForm };
+      console.log(action);
+      return { ...state, Component: ProfileForm };
     case 'UsersContainer':
-      return { Component: UsersContainer };
+      console.log(action);
+      return { ...state, Component: UsersContainer };
     case 'EventForm':
-      return { Component: EventForm };
+      console.log(action);
+      return { ...state, Component: EventForm };
     case 'EventsContainer':
-      return { Component: EventsContainer };
+      console.log(action);
+      return { ...state, Component: EventsContainer };
     case 'EventsContainerAll':
-      return { Component: EventsContainer, arg: 'All' };
+      console.log(action);
+      return { ...state, Component: EventsContainer, arg: 'All' };
+    case 'EventsContainerMyEvents':
+      console.log(action);
+      return { ...state, Component: EventsContainer, arg: 'MyEvents' };
+    case 'EventsContainerUpcoming':
+      console.log(action);
+      return { ...state, Component: EventsContainer, arg: 'Upcoming', changed: !state.changed };
     default:
       return state;
   }

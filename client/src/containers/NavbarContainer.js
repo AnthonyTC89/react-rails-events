@@ -38,18 +38,21 @@ class NavbarContainer extends React.Component {
       NavAllUsers = <NavDropdown.Item onClick={() => this.handleClick('UsersContainer')}>AllUsers</NavDropdown.Item>;
       NavAllEvents = <NavDropdown.Item onClick={() => this.handleClick('EventsContainerAll')}>AllEvents</NavDropdown.Item>;
     }
-    let NavSuperUser = null;
+    let NavEventForm = null;
+    let NavMyEvents = null;
     if (session.isLoggedIn && (session.user.status === 1 || session.user.status === 2)) {
-      NavSuperUser = <Nav.Link onClick={() => this.handleClick('EventForm')}>Create Events</Nav.Link>;
+      NavEventForm = <Nav.Link onClick={() => this.handleClick('EventForm')}>Create Events</Nav.Link>;
+      NavMyEvents = <Nav.Link onClick={() => this.handleClick('EventsContainerMyEvents')}>My Events</Nav.Link>;
     }
     return (
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Brand onClick={() => this.handleClick('DashboardMenu')}>
+        <Navbar.Brand onClick={() => this.handleClick('EventsContainerUpcoming')}>
           Dashboard /
           {session.user.username}
         </Navbar.Brand>
-        {NavSuperUser}
+        {NavEventForm}
+        {NavMyEvents}
         <NavDropdown title="Account" id="collasible-nav-dropdown">
           {NavAllUsers}
           {NavAllEvents}

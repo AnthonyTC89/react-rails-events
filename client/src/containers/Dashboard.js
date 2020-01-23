@@ -15,11 +15,7 @@ class Dashboard extends React.Component {
   componentDidMount() {
     const { checkLoginStatus } = this.props;
     checkLoginStatus();
-  }
 
-  componentWillUnmount() {
-    const { changeDashboardTo } = this.props;
-    changeDashboardTo('default');
   }
 
   render() {
@@ -41,7 +37,6 @@ Dashboard.propTypes = {
   session: PropTypes.object.isRequired,
   dashboard: PropTypes.object.isRequired,
   checkLoginStatus: PropTypes.func.isRequired,
-  changeDashboardTo: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -51,7 +46,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   checkLoginStatus: () => dispatch(loginStatus()),
-  changeDashboardTo: (name) => dispatch(updateDashboard(name)),
 });
 
 const DashboardWrapper = connect(mapStateToProps, mapDispatchToProps)(Dashboard);

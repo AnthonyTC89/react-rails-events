@@ -24,7 +24,6 @@ class UsersContainer extends React.Component {
   getUsersDB() {
     axios.get('/api/v1/users', { withCredentials: true })
       .then((response) => {
-        console.log('response: ', response);
         this.setState({
           users: response.data,
         });
