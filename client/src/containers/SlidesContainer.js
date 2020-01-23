@@ -3,7 +3,7 @@ import { Carousel } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import loginStatus from '../redux/actions/loginStatus';
-import CardEvent from '../components/CardEvent';
+import EventInfo from '../components/EventInfo';
 
 class SlidesContainer extends React.Component {
   // constructor(props) {
@@ -19,13 +19,13 @@ class SlidesContainer extends React.Component {
     return (
       <Carousel>
         <Carousel.Item>
-          <CardEvent />
+          <EventInfo />
         </Carousel.Item>
         <Carousel.Item>
-          <CardEvent />
+          <EventInfo />
         </Carousel.Item>
         <Carousel.Item>
-          <CardEvent />
+          <EventInfo />
         </Carousel.Item>
       </Carousel>
     );

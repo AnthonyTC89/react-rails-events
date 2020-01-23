@@ -1,4 +1,4 @@
 export const type = 'UPDATE_DASHBOARD';
-const updateDashboard = (name) => ({ type, name });
+const updateDashboard = (Component) => ({ type, Component });
 
 export default updateDashboard;

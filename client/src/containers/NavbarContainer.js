@@ -32,13 +32,15 @@ class NavbarContainer extends React.Component {
 
   render() {
     const { session } = this.props;
-    let NavAdmin = null;
+    let NavAllUsers = null;
+    let NavAllEvents = null;
     if (session.isLoggedIn && session.user.status === 1) {
-      NavAdmin = <NavDropdown.Item onClick={() => this.handleClick('UsersContainer')}>Admin</NavDropdown.Item>;
+      NavAllUsers = <NavDropdown.Item onClick={() => this.handleClick('UsersContainer')}>AllUsers</NavDropdown.Item>;
+      NavAllEvents = <NavDropdown.Item onClick={() => this.handleClick('EventsContainerAll')}>AllEvents</NavDropdown.Item>;
     }
     let NavSuperUser = null;
     if (session.isLoggedIn && (session.user.status === 1 || session.user.status === 2)) {
-      NavSuperUser = <Nav.Link onClick={() => this.handleClick('ProfileForm')}>Create Events</Nav.Link>;
+      NavSuperUser = <Nav.Link onClick={() => this.handleClick('EventForm')}>Create Events</Nav.Link>;
     }
     return (
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -49,7 +51,8 @@ class NavbarContainer extends React.Component {
         </Navbar.Brand>
         {NavSuperUser}
         <NavDropdown title="Account" id="collasible-nav-dropdown">
-          {NavAdmin}
+          {NavAllUsers}
+          {NavAllEvents}
           <NavDropdown.Item onClick={() => this.handleClick('ProfileForm')}>Profile</NavDropdown.Item>
           <NavDropdown.Divider />
           <NavDropdown.Item onClick={this.handleLogout}>Logout</NavDropdown.Item>

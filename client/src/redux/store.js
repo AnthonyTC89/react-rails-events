@@ -1,10 +1,10 @@
 import { createStore, combineReducers } from 'redux';
 import session from './reducers/session';
-import dashboardReducer from './reducers/dashboardReducer';
+import dashboard from './reducers/dashboard';
 
 const reducer = combineReducers({
   session,
-  dashboardReducer,
+  dashboard,
 });
 
 const store = createStore(reducer);

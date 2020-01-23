@@ -3,8 +3,9 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import loginStatus from '../redux/actions/loginStatus';
 import NavbarContainer from './NavbarContainer';
+import loginStatus from '../redux/actions/loginStatus';
+import updateDashboard from '../redux/actions/updateDashboard';
 
 class Dashboard extends React.Component {
   // constructor(props) {
@@ -16,33 +17,41 @@ class Dashboard extends React.Component {
     checkLoginStatus();
   }
 
+  componentWillUnmount() {
+    const { changeDashboardTo } = this.props;
+    changeDashboardTo('default');
+  }
+
   render() {
-    const { session, dashboardState } = this.props;
+    const { session, dashboard } = this.props;
     if (!session.isLoggedIn) {
       return <Redirect to="/login" />;
     }
+    const { Component, arg } = dashboard;
     return (
       <div>
         <NavbarContainer />
-        <dashboardState.name />
+        <Component arg={arg} />
       </div>
     );
   }
 }
 
 Dashboard.propTypes = {
-  checkLoginStatus: PropTypes.func.isRequired,
   session: PropTypes.object.isRequired,
-  dashboardState: PropTypes.object.isRequired,
+  dashboard: PropTypes.object.isRequired,
+  checkLoginStatus: PropTypes.func.isRequired,
+  changeDashboardTo: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   session: state.session,
-  dashboardState: state.dashboardReducer,
+  dashboard: state.dashboard,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   checkLoginStatus: () => dispatch(loginStatus()),
+  changeDashboardTo: (name) => dispatch(updateDashboard(name)),
 });
 
 const DashboardWrapper = connect(mapStateToProps, mapDispatchToProps)(Dashboard);
