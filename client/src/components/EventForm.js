@@ -1,12 +1,8 @@
 /* eslint-disable object-curly-newline */
 import React from 'react';
-// import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-// import login from '../redux/actions/login';
-// import logout from '../redux/actions/logout';
-// import loginStatus from '../redux/actions/loginStatus';
 import 'bootstrap/dist/css/bootstrap.css';
 import './Form.css';
 

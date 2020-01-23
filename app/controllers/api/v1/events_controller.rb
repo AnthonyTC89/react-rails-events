@@ -44,6 +44,8 @@ module Api::V1
     # DELETE /events/1
     def destroy
       @event.destroy
+      @events = Event.all
+      render json: @events, status: :accepted
     end
 
     private

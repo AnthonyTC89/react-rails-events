@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Button } from 'react-bootstrap';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
 import loginStatus from '../redux/actions/loginStatus';
@@ -36,11 +37,26 @@ class AllEventsContainer extends React.Component {
       .catch((error) => console.log('api errors:', error));
   }
 
+  handleDelete(id) {
+    axios.delete(`api/v1/events/${id}`, { withCredentials: true })
+      .then((response) => {
+        this.setState({
+          events: response.data,
+        });
+      })
+      .catch((error) => console.log('api errors:', error));
+  }
+
   render() {
     const { events } = this.state;
     return (
       <div className="container">
-        {events.map((event) => <EventInfo key={event.id} event={event} />)}
+        {events.map((event) => (
+          <div key={event.id}>
+            <EventInfo event={event} />
+            <Button onClick={() => this.handleDelete(event.id)}>Delete</Button>
+          </div>
+        ))}
       </div>
     );
   }
