@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import NavbarContainer from './NavbarContainer';
 import loginStatus from '../redux/actions/loginStatus';
-import updateDashboard from '../redux/actions/updateDashboard';
+// import updateDashboard from '../redux/actions/updateDashboard';
 
 class Dashboard extends React.Component {
   // constructor(props) {
@@ -15,7 +15,6 @@ class Dashboard extends React.Component {
   componentDidMount() {
     const { checkLoginStatus } = this.props;
     checkLoginStatus();
-
   }
 
   render() {

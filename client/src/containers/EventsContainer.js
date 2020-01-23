@@ -28,21 +28,8 @@ class EventsContainer extends React.Component {
   }
 
   componentDidMount() {
-    const { checkLoginStatus, arg } = this.props;
+    const { checkLoginStatus } = this.props;
     checkLoginStatus();
-    // switch (arg) {
-    //   case 'All':
-    //     this.getAllEvents();
-    //     break;
-    //   case 'MyEvents':
-    //     this.getMyEvents();
-    //     break;
-    //   case 'Upcoming':
-    //     this.getUpcomingEvents();
-    //     break;
-    //   default:
-    //     this.setStateDeafult();
-    // }
   }
 
   setStateDeafult() {
