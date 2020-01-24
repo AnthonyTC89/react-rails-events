@@ -7,6 +7,7 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
 import loginStatus from '../redux/actions/loginStatus';
 import EventCard from '../components/EventCard';
+import ToogleSwitch from '../components/ToogleSwitch';
 
 class UpcomingEventsContainer extends React.Component {
   constructor(props) {
@@ -14,7 +15,9 @@ class UpcomingEventsContainer extends React.Component {
     this.state = {
       events: [],
       joinEvents: [],
+      filter: false,
     };
+    this.handleSwitch = this.handleSwitch.bind(this);
   }
 
   componentDidMount() {
@@ -92,20 +95,33 @@ class UpcomingEventsContainer extends React.Component {
       });
   }
 
+  handleSwitch() {
+    const { filter } = this.state;
+    this.setState({
+      filter: !filter,
+    });
+  }
+
   render() {
-    const { events, joinEvents } = this.state;
+    const { events, joinEvents, filter } = this.state;
     return (
       <div className="container">
-        {events.map((event) => (
-          <div key={event.id}>
-            <EventCard event={event} />
-            {
-              joinEvents.includes(event.id)
-                ? <Button onClick={() => this.handleLeaveEvent(event.id)}>Leave</Button>
-                : <Button onClick={() => this.handleJoinEvent(event.id)}>Join</Button>
-            }
-          </div>
-        ))}
+        <ToogleSwitch onChange={this.handleSwitch} onSwitch={filter} textRight="Joined events " />
+        {events.map((event) => {
+          if (filter && !joinEvents.includes(event.id)) {
+            return null;
+          }
+          return (
+            <div key={event.id}>
+              <EventCard event={event} />
+              {
+                joinEvents.includes(event.id)
+                  ? <Button onClick={() => this.handleLeaveEvent(event.id)}>Leave</Button>
+                  : <Button onClick={() => this.handleJoinEvent(event.id)}>Join</Button>
+              }
+            </div>
+          );
+        })}
       </div>
     );
   }
