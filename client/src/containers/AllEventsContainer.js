@@ -5,7 +5,7 @@ import { Button } from 'react-bootstrap';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
 import loginStatus from '../redux/actions/loginStatus';
-import EventInfo from '../components/EventInfo';
+import EventCard from '../components/EventCard';
 
 class AllEventsContainer extends React.Component {
   constructor(props) {
@@ -53,7 +53,7 @@ class AllEventsContainer extends React.Component {
       <div className="container">
         {events.map((event) => (
           <div key={event.id}>
-            <EventInfo event={event} />
+            <EventCard event={event} />
             <Button onClick={() => this.handleDelete(event.id)}>Delete</Button>
           </div>
         ))}

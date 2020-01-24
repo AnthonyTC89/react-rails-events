@@ -87,7 +87,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   closeSession: (user) => dispatch(logout(user)),
   checkLoginStatus: () => dispatch(loginStatus()),
-  changeDashboardTo: (name) => dispatch(updateDashboard(name)),
+  changeDashboardTo: (Component) => dispatch(updateDashboard(Component)),
 });
 
 const NavbarWrapper = connect(mapStateToProps, mapDispatchToProps)(NavbarContainer);

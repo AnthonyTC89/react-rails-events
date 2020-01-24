@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, Button } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 
-const EventInfo = (props) => {
+const EventCard = (props) => {
   const { event } = props;
   return (
     <Card style={{ width: '10rem' }}>
@@ -10,13 +10,13 @@ const EventInfo = (props) => {
       <Card.Body>
         <Card.Title>{event.title}</Card.Title>
         <Card.Text>{event.description}</Card.Text>
-        <Button variant="primary">More Info</Button>
+        {/* <Button variant="primary">More Info</Button> */}
       </Card.Body>
     </Card>
   );
 };
 
-EventInfo.propTypes = {
+EventCard.propTypes = {
   event: PropTypes.object.isRequired,
 };
 
@@ -30,4 +30,4 @@ EventInfo.propTypes = {
 
 // const EventInfoWrapper = connect(mapStateToProps, mapDispatchToProps)(EventInfo);
 
-export default EventInfo;
+export default EventCard;

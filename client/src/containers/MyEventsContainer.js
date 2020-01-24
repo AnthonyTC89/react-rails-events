@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Button } from 'react-bootstrap';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
 import loginStatus from '../redux/actions/loginStatus';
-import EventInfo from '../components/EventInfo';
+import EventCard from '../components/EventCard';
+import updateDashboard from '../redux/actions/updateDashboard';
 
 class MyEventsContainer extends React.Component {
   constructor(props) {
@@ -50,11 +52,21 @@ class MyEventsContainer extends React.Component {
       .catch((error) => console.log('api errors:', error));
   }
 
+  handleEdit() {
+    const { changeDashboardTo } = this.props;
+    changeDashboardTo('EventUpdateForm');
+  }
+
   render() {
     const { events } = this.state;
     return (
       <div className="container">
-        {events.map((event) => <EventInfo key={event.id} event={event} />)}
+        {events.map((event) => (
+          <div key={event.id}>
+            <EventCard event={event} />
+            <Button onClick={() => this.handleEdit(event.id)}>Edit</Button>
+          </div>
+        ))}
       </div>
     );
   }
@@ -63,6 +75,7 @@ class MyEventsContainer extends React.Component {
 MyEventsContainer.propTypes = {
   checkLoginStatus: PropTypes.func.isRequired,
   session: PropTypes.object.isRequired,
+  changeDashboardTo: PropTypes.func.isRequired,
 };
 
 MyEventsContainer.defaultProps = {
@@ -75,6 +88,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   checkLoginStatus: () => dispatch(loginStatus()),
+  changeDashboardTo: (Component) => dispatch(updateDashboard(Component)),
 });
 
 const MyEventsWrapper = connect(mapStateToProps, mapDispatchToProps)(MyEventsContainer);

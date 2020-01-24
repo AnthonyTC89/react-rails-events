@@ -7,6 +7,7 @@ import EventForm from '../../components/EventForm';
 import AllEventsContainer from '../../containers/AllEventsContainer';
 import MyEventsContainer from '../../containers/MyEventsContainer';
 import UpcomingEventsContainer from '../../containers/UpcomingEventsContainer';
+import EventUpdateForm from '../../components/EventUpdateForm';
 
 const defaultDashboard = {
   Component: ProfileForm,
@@ -28,6 +29,8 @@ const dashboard = (state = defaultDashboard, action) => {
       return { Component: MyEventsContainer };
     case 'UpcomingEventsContainer':
       return { Component: UpcomingEventsContainer };
+    case 'EventUpdateForm':
+      return { Component: EventUpdateForm };
     default:
       return state;
   }

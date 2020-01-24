@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
 import loginStatus from '../redux/actions/loginStatus';
-import EventInfo from '../components/EventInfo';
+import EventCard from '../components/EventCard';
 
 class UpcomingEventsContainer extends React.Component {
   constructor(props) {
@@ -42,7 +42,7 @@ class UpcomingEventsContainer extends React.Component {
     const { events } = this.state;
     return (
       <div className="container">
-        {events.map((event) => <EventInfo key={event.id} event={event} />)}
+        {events.map((event) => <EventCard key={event.id} event={event} />)}
       </div>
     );
   }
