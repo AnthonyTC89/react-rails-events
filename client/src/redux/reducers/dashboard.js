@@ -1,4 +1,3 @@
-/* eslint-disable object-curly-newline */
 /* eslint-disable no-unused-vars */
 import DashboardMenu from '../../containers/DashboardMenu';
 import ProfileForm from '../../components/ProfileForm';
@@ -8,29 +7,43 @@ import AllEventsContainer from '../../containers/AllEventsContainer';
 import MyEventsContainer from '../../containers/MyEventsContainer';
 import UpcomingEventsContainer from '../../containers/UpcomingEventsContainer';
 import EventUpdateForm from '../../components/EventUpdateForm';
+import updateDashboard from '../actions/updateDashboard';
 
 const defaultDashboard = {
-  Component: ProfileForm,
+  Component: {
+    NameComponent: ProfileForm,
+    arg: null,
+  },
 };
 
-const dashboard = (state = defaultDashboard, action) => {
-  switch (action.Component) {
+const changeDashboard = (Component) => {
+  switch (Component.name) {
     case 'DashboardMenu':
-      return { Component: DashboardMenu };
+      return { Component: { NameComponent: DashboardMenu } };
     case 'ProfileForm':
-      return { Component: ProfileForm };
+      return { Component: { NameComponent: ProfileForm } };
     case 'UsersContainer':
-      return { Component: UsersContainer };
+      return { Component: { NameComponent: UsersContainer } };
     case 'EventForm':
-      return { Component: EventForm };
+      return { Component: { NameComponent: EventForm } };
     case 'AllEventsContainer':
-      return { Component: AllEventsContainer };
+      return { Component: { NameComponent: AllEventsContainer } };
     case 'MyEventsContainer':
-      return { Component: MyEventsContainer };
+      return { Component: { NameComponent: MyEventsContainer } };
     case 'UpcomingEventsContainer':
-      return { Component: UpcomingEventsContainer };
+      return { Component: { NameComponent: UpcomingEventsContainer } };
     case 'EventUpdateForm':
-      return { Component: EventUpdateForm };
+      return { Component: { NameComponent: EventUpdateForm, arg: Component.arg } };
+    default:
+      return defaultDashboard;
+  }
+};
+
+
+const dashboard = (state = defaultDashboard, { type, Component }) => {
+  switch (type) {
+    case 'UPDATE_DASHBOARD':
+      return changeDashboard(Component);
     default:
       return state;
   }

@@ -52,9 +52,9 @@ class MyEventsContainer extends React.Component {
       .catch((error) => console.log('api errors:', error));
   }
 
-  handleEdit() {
+  handleEdit(event) {
     const { changeDashboardTo } = this.props;
-    changeDashboardTo('EventUpdateForm');
+    changeDashboardTo({ name: 'EventUpdateForm', arg: event });
   }
 
   render() {
@@ -64,7 +64,7 @@ class MyEventsContainer extends React.Component {
         {events.map((event) => (
           <div key={event.id}>
             <EventCard event={event} />
-            <Button onClick={() => this.handleEdit(event.id)}>Edit</Button>
+            <Button onClick={() => this.handleEdit(event)}>Edit</Button>
           </div>
         ))}
       </div>

@@ -25,9 +25,9 @@ class NavbarContainer extends React.Component {
     closeSession();
   }
 
-  handleClick(name) {
+  handleClick(Component) {
     const { changeDashboardTo } = this.props;
-    changeDashboardTo(name);
+    changeDashboardTo(Component);
   }
 
   render() {
@@ -35,19 +35,19 @@ class NavbarContainer extends React.Component {
     let NavAllUsers = null;
     let NavAllEvents = null;
     if (session.isLoggedIn && session.user.status === 1) {
-      NavAllUsers = <NavDropdown.Item onClick={() => this.handleClick('UsersContainer')}>AllUsers</NavDropdown.Item>;
-      NavAllEvents = <NavDropdown.Item onClick={() => this.handleClick('AllEventsContainer')}>AllEvents</NavDropdown.Item>;
+      NavAllUsers = <NavDropdown.Item onClick={() => this.handleClick({ name: 'UsersContainer' })}>AllUsers</NavDropdown.Item>;
+      NavAllEvents = <NavDropdown.Item onClick={() => this.handleClick({ name: 'AllEventsContainer' })}>AllEvents</NavDropdown.Item>;
     }
     let NavEventForm = null;
     let NavMyEvents = null;
     if (session.isLoggedIn && (session.user.status === 1 || session.user.status === 2)) {
-      NavEventForm = <Nav.Link onClick={() => this.handleClick('EventForm')}>Create Events</Nav.Link>;
-      NavMyEvents = <Nav.Link onClick={() => this.handleClick('MyEventsContainer')}>My Events</Nav.Link>;
+      NavEventForm = <Nav.Link onClick={() => this.handleClick({ name: 'EventForm' })}>Create Events</Nav.Link>;
+      NavMyEvents = <Nav.Link onClick={() => this.handleClick({ name: 'MyEventsContainer' })}>My Events</Nav.Link>;
     }
     return (
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Brand onClick={() => this.handleClick('UpcomingEventsContainer')}>
+        <Navbar.Brand onClick={() => this.handleClick({ name: 'UpcomingEventsContainer' })}>
           Dashboard /
           {session.user.username}
         </Navbar.Brand>
@@ -56,7 +56,7 @@ class NavbarContainer extends React.Component {
         <NavDropdown title="Account" id="collasible-nav-dropdown">
           {NavAllUsers}
           {NavAllEvents}
-          <NavDropdown.Item onClick={() => this.handleClick('ProfileForm')}>Profile</NavDropdown.Item>
+          <NavDropdown.Item onClick={() => this.handleClick({ name: 'ProfileForm' })}>Profile</NavDropdown.Item>
           <NavDropdown.Divider />
           <NavDropdown.Item onClick={this.handleLogout}>Logout</NavDropdown.Item>
         </NavDropdown>

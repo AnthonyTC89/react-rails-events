@@ -22,11 +22,11 @@ class Dashboard extends React.Component {
     if (!session.isLoggedIn) {
       return <Redirect to="/login" />;
     }
-    const { Component } = dashboard;
+    const { NameComponent, arg } = dashboard.Component;
     return (
       <div>
         <NavbarContainer />
-        <Component />
+        <NameComponent arg={arg} />
       </div>
     );
   }

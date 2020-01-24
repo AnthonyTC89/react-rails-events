@@ -9,29 +9,19 @@ import './Form.css';
 class EventUpdateForm extends React.Component {
   constructor(props) {
     super(props);
+    console.log(props);
     this.state = {
-      title: '',
-      description: '',
-      date: '',
-      time: '',
-      location: '',
-      user_id: props.session.user.id,
+      id: props.arg.id,
+      title: props.arg.title,
+      description: props.arg.description,
+      date: props.arg.date,
+      time: props.arg.time.slice(11, 16),
+      location: props.arg.location,
+      user_id: props.session.user.user_id,
       errors: [],
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
-    this.setDefaultState = this.setDefaultState.bind(this);
-  }
-
-  setDefaultState() {
-    this.setState({
-      title: '',
-      description: '',
-      date: '',
-      time: '',
-      location: '',
-      errors: [],
-    });
   }
 
   handleChange(e) {
@@ -43,34 +33,30 @@ class EventUpdateForm extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     // eslint-disable-next-line camelcase
-    const { title, description, date, time, location, user_id } = this.state;
-    const data = {
-      event: {
-        title,
-        description,
-        date,
-        time,
-        location,
-        status: 1,
-        user_id,
-      },
+    const { id, title, description, date, time, location, user_id } = this.state;
+    const event = {
+      id,
+      title,
+      description,
+      date,
+      time,
+      location,
+      status: 1,
+      user_id,
     };
 
-    axios.post('api/v1/events', data)
+    axios.put(`api/v1/events/${id}`, { event }, { withCredentials: true })
       .then((response) => {
         console.log(response);
-        this.setDefaultState();
       })
       .catch((error) => {
         console.log('api errors: ', error);
-        this.setState({
-          errors: error,
-        });
       });
   }
 
   render() {
     const { title, description, date, time, location, errors } = this.state;
+    console.log(time);
     return (
       <form onSubmit={this.handleSubmit} className="form">
         <input
@@ -130,6 +116,7 @@ class EventUpdateForm extends React.Component {
 
 EventUpdateForm.propTypes = {
   session: PropTypes.object.isRequired,
+  arg: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
