@@ -21,6 +21,12 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
-#vscode config
+# vscode config
 /.vscode
+/client/node_modules
+
+# public files
+/public
+
+# node_modules react
 /client/node_modules
