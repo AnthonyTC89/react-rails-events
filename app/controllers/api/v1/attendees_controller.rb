@@ -4,7 +4,13 @@ module Api::V1
 
     # GET /attendees
     def index
-      @attendees = Attendee.all
+      if params[:user_id]
+        @attendees = Attendee.where('user_id = ? AND status = 1', params[:user_id])
+        @attendees = @attendees.collect {|att| att.event_id}
+      else
+        @attendees = Attendee.all
+      end
+      
       render json: @attendees
     end
 
@@ -18,7 +24,7 @@ module Api::V1
       @attendee = Attendee.new(attendee_params)
 
       if @attendee.save
-        render json: @attendee, status: :created, location: @attendee
+        render json: @attendee, status: :created
       else
         render json: @attendee.errors, status: :unprocessable_entity
       end
@@ -35,6 +41,16 @@ module Api::V1
 
     # DELETE /attendees/1
     def destroy
+      @attendee.destroy
+    end
+
+    # DELETE /attendees(user_id, event_id)
+    def leave
+      p "params >>>>>> #{params}"
+      p "params[:user_id] >>>>>> #{params[:user_id]}"
+      p "params[:event_id] >>>>>> #{params[:event_id]}"
+      @attendee = Attendee.where('user_id = ? AND event_id = ?', params[:user_id], params[:event_id]).first
+      p "@attendee >>>>>> #{@attendee}"
       @attendee.destroy
     end
 

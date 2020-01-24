@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :attendees
   namespace :api do
     namespace :v1 do
       post '/login', to: 'sessions#create'
@@ -7,6 +6,8 @@ Rails.application.routes.draw do
       get '/logged_in', to: 'sessions#is_logged_in?'
       resources :users
       resources :events
+      delete '/attendees/leave', to: 'attendees#leave'
+      resources :attendees
     end
   end
 end
