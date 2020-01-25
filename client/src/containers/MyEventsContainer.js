@@ -7,6 +7,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import loginStatus from '../redux/actions/loginStatus';
 import EventCard from '../components/EventCard';
 import updateDashboard from '../redux/actions/updateDashboard';
+import iconEdit from '../images/iconEdit.png';
+import './EventContainer.css';
 
 class MyEventsContainer extends React.Component {
   constructor(props) {
@@ -61,10 +63,13 @@ class MyEventsContainer extends React.Component {
     const { events } = this.state;
     return (
       <div className="container">
+        <h3>MY EVENTS</h3>
         {events.map((event) => (
-          <div key={event.id}>
+          <div key={event.id} className="row">
             <EventCard event={event} />
-            <Button onClick={() => this.handleEdit(event)}>Edit</Button>
+            <Button variant="info" onClick={() => this.handleEdit(event)}>
+              <img className="icon" src={iconEdit} alt="icon-edit" />
+            </Button>
           </div>
         ))}
       </div>

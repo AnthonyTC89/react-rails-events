@@ -107,6 +107,7 @@ class UpcomingEventsContainer extends React.Component {
     const { events, joinEvents, filter } = this.state;
     return (
       <div className="container">
+        <h3>UPCOMING EVENTS</h3>
         <ToogleSwitch onChange={this.handleSwitch} onSwitch={filter} textRight="Joined events " />
         {events.map((event) => {
           if (filter && !joinEvents.includes(event.id)) {
