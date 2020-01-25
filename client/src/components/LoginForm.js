@@ -61,6 +61,12 @@ class LoginForm extends React.Component {
         if (response.data.logged_in) {
           addSession(response.data.user);
           history.push('/dashboard');
+        } else {
+          this.setState({
+            btnLoading: false,
+            errors: [response.data.errors],
+            password: '',
+          });
         }
       })
       .catch((error) => {

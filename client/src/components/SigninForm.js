@@ -46,7 +46,7 @@ class SigninForm extends React.Component {
   async handleSubmit(e) {
     e.preventDefault();
     const { email, password } = this.state;
-    const { addSession } = this.props;
+    const { addSession, history } = this.props;
     const data = {
       user: {
         username: email,
@@ -68,6 +68,7 @@ class SigninForm extends React.Component {
           btnLoading: false,
         });
         addSession(response.data);
+        history.push('/dashboard');
       })
       .catch((error) => {
         if (error.response.status === 500) {
