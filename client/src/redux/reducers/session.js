@@ -16,20 +16,8 @@ const session = (state = defaultSession, { type, user }) => {
         isLoggedIn: true,
       };
     case 'LOGIN_STATUS':
-      // axios.get('api/v1/logged_in', { withCredentials: true })
-      //   .then((response) => {
-      //     console.log('LOGIN_STATUS: ', response);
-      //     console.log('STATE: ', state);
-      //   })
-      //   .catch((error) => console.log('api errors:', error));
       return state;
     case 'LOGOUT':
-      // axios.delete('api/v1/logout', { user }, { withCredentials: true })
-      // .then((response) => {
-      //   console.log('LOGOUT: ', response);
-      //   return defaultState;
-      // })
-      // .catch((error) => console.log('api errors:', error));
       return defaultSession;
     case 'UPDATE':
       return {

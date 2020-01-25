@@ -7,7 +7,6 @@ import AllEventsContainer from '../../containers/AllEventsContainer';
 import MyEventsContainer from '../../containers/MyEventsContainer';
 import UpcomingEventsContainer from '../../containers/UpcomingEventsContainer';
 import EventUpdateForm from '../../components/EventUpdateForm';
-import updateDashboard from '../actions/updateDashboard';
 
 const defaultDashboard = {
   Component: {
@@ -16,8 +15,8 @@ const defaultDashboard = {
   },
 };
 
-const changeDashboard = (Component) => {
-  switch (Component.name) {
+const changeDashboard = ({ name, arg }) => {
+  switch (name) {
     case 'DashboardMenu':
       return { Component: { NameComponent: DashboardMenu } };
     case 'ProfileForm':
@@ -33,7 +32,7 @@ const changeDashboard = (Component) => {
     case 'UpcomingEventsContainer':
       return { Component: { NameComponent: UpcomingEventsContainer } };
     case 'EventUpdateForm':
-      return { Component: { NameComponent: EventUpdateForm, arg: Component.arg } };
+      return { Component: { NameComponent: EventUpdateForm, arg } };
     default:
       return defaultDashboard;
   }

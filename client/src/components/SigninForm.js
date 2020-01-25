@@ -1,9 +1,12 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable react/forbid-prop-types */
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Image, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import uuidv4 from 'uuid/v4';
 import login from '../redux/actions/login';
 import logout from '../redux/actions/logout';
 import loginStatus from '../redux/actions/loginStatus';
@@ -17,6 +20,8 @@ class SigninForm extends React.Component {
       email: '',
       password: '',
       confirmation: '',
+      btnLoading: false,
+      errors: [],
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -36,7 +41,7 @@ class SigninForm extends React.Component {
     });
   }
 
-  handleSubmit(e) {
+  async handleSubmit(e) {
     e.preventDefault();
     const { email, password } = this.state;
     const { addSession } = this.props;
@@ -49,24 +54,43 @@ class SigninForm extends React.Component {
         status: 2,
       },
     };
-    axios.post('/api/v1/users', data)
+    this.setState({
+      btnLoading: true,
+    });
+    await axios.post('/api/v1/users', data)
       .then((response) => {
         this.setState({
           email: '',
           password: '',
           confirmation: '',
+          btnLoading: false,
         });
         addSession(response.data);
       })
       .catch((error) => {
-        console.log('error: ', error);
+        if (error.response.status === 500) {
+          this.setState({
+            btnLoading: false,
+            errors: ['Connection failed.', error.response.statusText],
+          });
+        } else {
+          this.setState({
+            btnLoading: false,
+            errors: error.response.data,
+          });
+        }
       });
   }
 
   render() {
-    const { email, password, confirmation } = this.state;
+    const { email, password, confirmation, btnLoading, errors } = this.state;
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={!btnLoading ? this.handleSubmit : null}>
+        <Image
+          className="img-form"
+          src="https://www.wtseo.co/wp-content/uploads/2019/11/vent-4.gif"
+        />
+        <h2>Sign up</h2>
         <input
           className="form-control"
           onChange={this.handleChange}
@@ -94,9 +118,18 @@ class SigninForm extends React.Component {
           name="confirmation"
           required
         />
-        <button type="submit">Sign in</button>
+        <ul className="text-danger">
+          {errors.map((e) => <li key={uuidv4()}><small>{e}</small></li>)}
+        </ul>
+        <Button
+          type="submit"
+          variant="primary"
+          disabled={btnLoading}
+        >
+          {btnLoading ? 'Loading…' : 'Sign in'}
+        </Button>
         <div className="form-group">
-          <Link to="/login">Login</Link>
+          <Link to="/login">You already have an account, Login!</Link>
         </div>
       </form>
     );

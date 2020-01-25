@@ -9,16 +9,18 @@ import DashboardWrapper from './Dashboard';
 import './App.css';
 
 const App = () => (
-  <Provider store={store}>
-    <BrowserRouter>
-      <Switch>
-        <Route path="/login" component={LoginWrapper} />
-        <Route path="/sign_in" component={SigninWrapper} />
-        <Route path="/dashboard" component={DashboardWrapper} />
-        <Redirect from="/" to="/login" />
-      </Switch>
-    </BrowserRouter>
-  </Provider>
+  <div className="App-container">
+    <Provider store={store}>
+      <BrowserRouter>
+        <Switch>
+          <Route path="/login" component={LoginWrapper} />
+          <Route path="/sign_in" component={SigninWrapper} />
+          <Route path="/dashboard" component={DashboardWrapper} />
+          <Redirect from="/" to="/login" />
+        </Switch>
+      </BrowserRouter>
+    </Provider>
+  </div>
 );
 
 export default App;

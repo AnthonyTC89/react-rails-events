@@ -1,8 +1,24 @@
 form {
   width: fit-content;
-  margin: 5rem auto;
+  margin: 2rem auto;
   text-align: center;
+  color: #164BCD;
 }
 .form-control {
   width: 15rem;
+}
+.img-form {
+  width: 12rem;
+  margin: 1rem auto;
+}
+.btn{
+  margin: 1rem auto;
+}
+a {
+  color: #164BCD;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }

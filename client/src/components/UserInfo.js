@@ -22,9 +22,6 @@ const getStatusName = (status) => {
   }
 };
 
-// function simulateNetworkRequest() {
-//   return new Promise((resolve) => setTimeout(resolve, 2000));
-// }
 async function upgradeStatus(user) {
   // eslint-disable-next-line no-param-reassign
   user.status = 2;
