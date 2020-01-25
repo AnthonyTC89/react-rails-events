@@ -4,12 +4,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Image, Button } from 'react-bootstrap';
+import { StyleRoot } from 'radium';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import uuidv4 from 'uuid/v4';
 import login from '../redux/actions/login';
 import logout from '../redux/actions/logout';
 import loginStatus from '../redux/actions/loginStatus';
+import animations from '../animations';
 import 'bootstrap/dist/css/bootstrap.css';
 import './Form.css';
 
@@ -85,53 +87,55 @@ class SigninForm extends React.Component {
   render() {
     const { email, password, confirmation, btnLoading, errors } = this.state;
     return (
-      <form onSubmit={!btnLoading ? this.handleSubmit : null}>
-        <Image
-          className="img-form"
-          src="https://www.wtseo.co/wp-content/uploads/2019/11/vent-4.gif"
-        />
-        <h2>Sign up</h2>
-        <input
-          className="form-control"
-          onChange={this.handleChange}
-          type="text"
-          placeholder="email"
-          value={email}
-          name="email"
-          required
-        />
-        <input
-          className="form-control"
-          onChange={this.handleChange}
-          type="password"
-          placeholder="password"
-          value={password}
-          name="password"
-          required
-        />
-        <input
-          className="form-control"
-          onChange={this.handleChange}
-          type="password"
-          placeholder="password confirmation"
-          value={confirmation}
-          name="confirmation"
-          required
-        />
-        <ul className="text-danger">
-          {errors.map((e) => <li key={uuidv4()}><small>{e}</small></li>)}
-        </ul>
-        <Button
-          type="submit"
-          variant="primary"
-          disabled={btnLoading}
-        >
-          {btnLoading ? 'Loading…' : 'Sign in'}
-        </Button>
-        <div className="form-group">
-          <Link to="/login">You already have an account, Login!</Link>
-        </div>
-      </form>
+      <StyleRoot>
+        <form onSubmit={!btnLoading ? this.handleSubmit : null} style={animations.fadeIn}>
+          <Image
+            className="img-form"
+            src="https://www.wtseo.co/wp-content/uploads/2019/11/vent-4.gif"
+          />
+          <h2>Sign up</h2>
+          <input
+            className="form-control"
+            onChange={this.handleChange}
+            type="text"
+            placeholder="email"
+            value={email}
+            name="email"
+            required
+          />
+          <input
+            className="form-control"
+            onChange={this.handleChange}
+            type="password"
+            placeholder="password"
+            value={password}
+            name="password"
+            required
+          />
+          <input
+            className="form-control"
+            onChange={this.handleChange}
+            type="password"
+            placeholder="password confirmation"
+            value={confirmation}
+            name="confirmation"
+            required
+          />
+          <ul className="text-danger">
+            {errors.map((e) => <li key={uuidv4()}><small>{e}</small></li>)}
+          </ul>
+          <Button
+            type="submit"
+            variant="primary"
+            disabled={btnLoading}
+          >
+            {btnLoading ? 'Loading…' : 'Sign in'}
+          </Button>
+          <div className="form-group">
+            <Link to="/login">You already have an account, Login!</Link>
+          </div>
+        </form>
+      </StyleRoot>
     );
   }
 }
