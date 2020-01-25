@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import loginStatus from '../redux/actions/loginStatus';
 import EventCard from '../components/EventCard';
 import ToogleSwitch from '../components/ToogleSwitch';
+import './EventContainer.css';
 
 class UpcomingEventsContainer extends React.Component {
   constructor(props) {
@@ -112,12 +113,12 @@ class UpcomingEventsContainer extends React.Component {
             return null;
           }
           return (
-            <div key={event.id}>
+            <div key={event.id} className="row">
               <EventCard event={event} />
               {
                 joinEvents.includes(event.id)
-                  ? <Button onClick={() => this.handleLeaveEvent(event.id)}>Leave</Button>
-                  : <Button onClick={() => this.handleJoinEvent(event.id)}>Join</Button>
+                  ? <Button variant="danger" onClick={() => this.handleLeaveEvent(event.id)}>-</Button>
+                  : <Button variant="info" onClick={() => this.handleJoinEvent(event.id)}>+</Button>
               }
             </div>
           );

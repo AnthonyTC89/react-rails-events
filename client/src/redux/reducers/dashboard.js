@@ -10,7 +10,7 @@ import EventUpdateForm from '../../components/EventUpdateForm';
 
 const defaultDashboard = {
   Component: {
-    NameComponent: ProfileForm,
+    NameComponent: UpcomingEventsContainer,
     arg: null,
   },
 };

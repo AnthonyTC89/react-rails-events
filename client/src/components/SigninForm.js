@@ -53,7 +53,7 @@ class SigninForm extends React.Component {
         email,
         password,
         password_confirmation: password,
-        status: 2,
+        status: 3,
       },
     };
     this.setState({
