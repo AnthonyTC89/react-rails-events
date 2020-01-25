@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
+import uuidv4 from 'uuid/v4';
 import { Image, Button } from 'react-bootstrap';
 import loginStatus from '../redux/actions/loginStatus';
 import updateSession from '../redux/actions/updateSession';
@@ -21,7 +22,10 @@ class ProfileForm extends React.Component {
       password: '',
       confirmation: '',
       status: session.user.status,
-      // errors: '',
+      btnUpdateLoading: false,
+      btnUpgradeLoading: false,
+      errors: [],
+      messages: [],
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
@@ -44,19 +48,32 @@ class ProfileForm extends React.Component {
     const { updateUserSession } = this.props;
     return axios.put(`api/v1/users/${user.id}`, { user }, { withCredentials: true })
       .then((response) => {
+        const msg = response.data.status === 4
+          ? 'Request sent.'
+          : 'Account updated.';
         this.setState({
           username: response.data.username,
           password: '',
           confirmation: '',
           status: response.data.status,
-          // errors: '',
+          btnUpdateLoading: false,
+          btnUpgradeLoading: false,
+          errors: [],
+          messages: [msg],
         });
         updateUserSession(response.data);
       })
-      .catch((error) => console.log('api errors: ', error));
+      .catch((error) => {
+        this.setState({
+          btnUpdateLoading: false,
+          btnUpgradeLoading: false,
+          errors: [],
+          messages: ['Connection failed.', error.response.statusText],
+        });
+      });
   }
 
-  handleUpgrade() {
+  async handleUpgrade() {
     const { session } = this.props;
     const { id, username, email, password, confirmation } = session.user;
     const user = {
@@ -67,12 +84,21 @@ class ProfileForm extends React.Component {
       password_confirmation: confirmation,
       status: 4,
     };
-    return this.upgradeUser(user);
+    this.setState({
+      btnUpgradeLoading: true,
+    });
+    await this.upgradeUser(user);
   }
 
-  handleSubmit(e) {
+  async handleSubmit(e) {
     e.preventDefault();
     const { id, username, email, password, confirmation, status } = this.state;
+    if (password !== confirmation) {
+      this.setState({
+        errors: ['Password confirmation wrong.'],
+      });
+      return;
+    }
     const user = {
       id,
       username,
@@ -81,27 +107,35 @@ class ProfileForm extends React.Component {
       password_confirmation: confirmation,
       status,
     };
-    return this.upgradeUser(user);
+    this.setState({
+      btnUpdateLoading: true,
+    });
+    await this.upgradeUser(user);
   }
 
   render() {
-    const { username, email, password, confirmation, status } = this.state;
+    const { username, email, password, confirmation, status,
+      btnUpdateLoading, btnUpgradeLoading, errors, messages } = this.state;
     const hash = CryptoJS.MD5(email);
     const url = `http://www.gravatar.com/avatar/${hash}`;
     const gravatar = 'https://en.gravatar.com/site/login';
     const btnUpgrade = status === 3 ? (
       <Button
-        variant="primary"
-        onClick={this.handleUpgrade}
+        type="button"
+        variant="secondary"
+        disabled={btnUpgradeLoading}
+        onClick={!btnUpgradeLoading ? this.handleUpgrade : null}
+        size="lg"
+        block
       >
-        UPGRADE
+        {btnUpgradeLoading ? 'Loading…' : 'Upgrade Account'}
       </Button>
     ) : null;
 
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={!btnUpdateLoading ? this.handleSubmit : null}>
         <a href={gravatar} target="_blank" rel="noopener noreferrer">
-          <Image src={url} roundedCircle />
+          <Image className="img-profile" src={url} roundedCircle />
         </a>
         <input
           className="form-control"
@@ -139,7 +173,15 @@ class ProfileForm extends React.Component {
           name="confirmation"
           required
         />
-        <button type="submit">Update</button>
+        <ul className="text-success">
+          {messages.map((msg) => <li key={uuidv4()}><small>{msg}</small></li>)}
+        </ul>
+        <ul className="text-danger">
+          {errors.map((err) => <li key={uuidv4()}><small>{err}</small></li>)}
+        </ul>
+        <Button type="submit" variant="primary" disabled={btnUpdateLoading}>
+          {btnUpdateLoading ? 'Loading…' : 'Update'}
+        </Button>
         {btnUpgrade}
       </form>
     );
