@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-import DashboardMenu from '../../containers/DashboardMenu';
 import ProfileForm from '../../components/ProfileForm';
 import UsersContainer from '../../containers/UsersContainer';
 import EventForm from '../../components/EventForm';
@@ -17,8 +16,6 @@ const defaultDashboard = {
 
 const changeDashboard = ({ name, arg }) => {
   switch (name) {
-    case 'DashboardMenu':
-      return { Component: { NameComponent: DashboardMenu } };
     case 'ProfileForm':
       return { Component: { NameComponent: ProfileForm } };
     case 'UsersContainer':
