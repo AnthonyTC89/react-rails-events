@@ -32,42 +32,51 @@ class NavbarContainer extends React.Component {
 
   render() {
     const { session } = this.props;
-    let NavAllUsers = null;
-    let NavAllEvents = null;
+    let NavAdmin = null; // status: 1 => Admin
+    let NavSuperUser = null; // status: 2 => SuperUser
     if (session.isLoggedIn && session.user.status === 1) {
-      NavAllUsers = <NavDropdown.Item onClick={() => this.handleClick({ name: 'UsersContainer' })}>AllUsers</NavDropdown.Item>;
-      NavAllEvents = <NavDropdown.Item onClick={() => this.handleClick({ name: 'AllEventsContainer' })}>AllEvents</NavDropdown.Item>;
+      NavAdmin = (
+        <NavDropdown title="Admin" id="collasible-nav-dropdown">
+          <NavDropdown.Item onClick={() => this.handleClick({ name: 'UsersContainer' })}>
+            AllUsers
+          </NavDropdown.Item>
+          <NavDropdown.Item onClick={() => this.handleClick({ name: 'AllEventsContainer' })}>
+            AllEvents
+          </NavDropdown.Item>
+        </NavDropdown>
+      );
     }
-    let NavEventForm = null;
-    let NavMyEvents = null;
     if (session.isLoggedIn && (session.user.status === 1 || session.user.status === 2)) {
-      NavEventForm = <Nav.Link onClick={() => this.handleClick({ name: 'EventForm' })}>Create Events</Nav.Link>;
-      NavMyEvents = <Nav.Link onClick={() => this.handleClick({ name: 'MyEventsContainer' })}>My Events</Nav.Link>;
+      NavSuperUser = (
+        <NavDropdown title="SuperUser" id="collasible-nav-dropdown">
+          <NavDropdown.Item onClick={() => this.handleClick({ name: 'EventForm' })}>
+            Create Events
+          </NavDropdown.Item>
+          <NavDropdown.Item onClick={() => this.handleClick({ name: 'MyEventsContainer' })}>
+            My Events
+          </NavDropdown.Item>
+        </NavDropdown>
+      );
     }
+
     return (
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Brand onClick={() => this.handleClick({ name: 'UpcomingEventsContainer' })}>
-          Dashboard /
-          {session.user.username}
-        </Navbar.Brand>
-        {NavEventForm}
-        {NavMyEvents}
-        <NavDropdown title="Account" id="collasible-nav-dropdown">
-          {NavAllUsers}
-          {NavAllEvents}
-          <NavDropdown.Item onClick={() => this.handleClick({ name: 'ProfileForm' })}>Profile</NavDropdown.Item>
-          <NavDropdown.Divider />
-          <NavDropdown.Item onClick={this.handleLogout}>Logout</NavDropdown.Item>
-        </NavDropdown>
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link href="#Home">Home</Nav.Link>
-            <Nav.Link href="#Home">Events</Nav.Link>
-            <Nav.Link href="#MyEvents">My Events</Nav.Link>
-            <Nav.Link href="#Attendees">Attendees</Nav.Link>
+            <Nav.Link onClick={() => this.handleClick({ name: 'UpcomingEventsContainer' })}>
+              Home
+            </Nav.Link>
+            <Nav.Link onClick={() => this.handleClick({ name: 'ProfileForm' })}>
+              Profile
+            </Nav.Link>
+            <Nav.Link onClick={this.handleLogout}>
+              Logout
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
+        {NavAdmin}
+        {NavSuperUser}
       </Navbar>
     );
   }
