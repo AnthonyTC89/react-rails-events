@@ -85,7 +85,6 @@ class EventForm extends React.Component {
         });
       })
       .catch((error) => {
-        console.log('api errors: ', error.response);
         this.setState({
           btnLoading: false,
           messages: [],

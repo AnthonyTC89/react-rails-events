@@ -1,9 +1,11 @@
+/* eslint-disable object-curly-newline */
 /* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
 import axios from 'axios';
+import uuidv4 from 'uuid/v4';
 import 'bootstrap/dist/css/bootstrap.css';
 import loginStatus from '../redux/actions/loginStatus';
 import EventCard from '../components/EventCard';
@@ -17,6 +19,7 @@ class UpcomingEventsContainer extends React.Component {
       events: [],
       joinEvents: [],
       filter: false,
+      errors: [],
     };
     this.handleSwitch = this.handleSwitch.bind(this);
   }
@@ -28,21 +31,20 @@ class UpcomingEventsContainer extends React.Component {
     this.getJoinEvents();
   }
 
-  setStateDeafult() {
-    this.setState({
-      events: [],
-    });
-  }
-
   getUpcomingEvents() {
     const params = { date: new Date() };
     axios.get('/api/v1/events', { params }, { withCredentials: true })
       .then((response) => {
         this.setState({
           events: response.data,
+          errors: [],
         });
       })
-      .catch((error) => console.log('api errors:', error));
+      .catch((error) => {
+        this.setState({
+          errors: ['Connection failed.', error.response.statusText],
+        });
+      });
   }
 
   getJoinEvents() {
@@ -54,9 +56,14 @@ class UpcomingEventsContainer extends React.Component {
       .then((response) => {
         this.setState({
           joinEvents: response.data,
+          errors: [],
         });
       })
-      .catch((error) => console.log('api errors:', error));
+      .catch((error) => {
+        this.setState({
+          errors: ['Connection failed.', error.response.statusText],
+        });
+      });
   }
 
   handleJoinEvent(event_id) {
@@ -71,10 +78,13 @@ class UpcomingEventsContainer extends React.Component {
       .then(() => {
         this.setState({
           joinEvents: [...joinEvents, event_id],
+          errors: [],
         });
       })
       .catch((error) => {
-        console.log('error: ', error);
+        this.setState({
+          errors: ['Connection failed.', error.response.statusText],
+        });
       });
   }
 
@@ -89,10 +99,13 @@ class UpcomingEventsContainer extends React.Component {
       .then(() => {
         this.setState({
           joinEvents: joinEvents.filter((eventID) => eventID !== event_id),
+          errors: [],
         });
       })
       .catch((error) => {
-        console.log('error: ', error);
+        this.setState({
+          errors: ['Connection failed.', error.response.statusText],
+        });
       });
   }
 
@@ -104,10 +117,13 @@ class UpcomingEventsContainer extends React.Component {
   }
 
   render() {
-    const { events, joinEvents, filter } = this.state;
+    const { events, joinEvents, filter, errors } = this.state;
     return (
       <div className="container">
         <h3>UPCOMING EVENTS</h3>
+        <ul className="text-danger">
+          {errors.map((err) => <li key={uuidv4()}><small>{err}</small></li>)}
+        </ul>
         <ToogleSwitch onChange={this.handleSwitch} onSwitch={filter} textRight="Joined events " />
         {events.map((event) => {
           if (filter && !joinEvents.includes(event.id)) {

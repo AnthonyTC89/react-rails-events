@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
+import uuidv4 from 'uuid/v4';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
 import loginStatus from '../redux/actions/loginStatus';
@@ -15,6 +16,7 @@ class MyEventsContainer extends React.Component {
     super(props);
     this.state = {
       events: [],
+      errors: [],
     };
   }
 
@@ -30,18 +32,6 @@ class MyEventsContainer extends React.Component {
     });
   }
 
-  getUpcomingEvents() {
-    const params = { date: new Date() };
-    console.log(params);
-    axios.get('/api/v1/events', { params }, { withCredentials: true })
-      .then((response) => {
-        this.setState({
-          events: response.data,
-        });
-      })
-      .catch((error) => console.log('api errors:', error));
-  }
-
   getMyEvents() {
     const { session } = this.props;
     const params = { user_id: session.user.id };
@@ -49,9 +39,15 @@ class MyEventsContainer extends React.Component {
       .then((response) => {
         this.setState({
           events: response.data,
+          errors: [],
         });
       })
-      .catch((error) => console.log('api errors:', error));
+      .catch((error) => {
+        this.setState({
+          events: [],
+          errors: ['Connection failed.', error.response.statusText],
+        });
+      });
   }
 
   handleEdit(event) {
@@ -60,10 +56,13 @@ class MyEventsContainer extends React.Component {
   }
 
   render() {
-    const { events } = this.state;
+    const { events, errors } = this.state;
     return (
       <div className="container">
         <h3>My Events</h3>
+        <ul className="text-danger">
+          {errors.map((err) => <li key={uuidv4()}><small>{err}</small></li>)}
+        </ul>
         {events.map((event) => (
           <div key={event.id} className="row">
             <EventCard event={event} />
