@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { StyleRoot } from 'radium';
 import { Button } from 'react-bootstrap';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
 import loginStatus from '../redux/actions/loginStatus';
 import EventCard from '../components/EventCard';
 import './EventContainer.css';
+import animations from '../animations';
 
 class AllEventsContainer extends React.Component {
   constructor(props) {
@@ -51,22 +53,23 @@ class AllEventsContainer extends React.Component {
   render() {
     const { events } = this.state;
     return (
-      <div className="container">
-        <h3>ALL EVENTS</h3>
-        {events.map((event) => (
-          <div key={event.id} className="row">
-            <EventCard event={event} />
-            <Button variant="danger" onClick={() => this.handleDelete(event.id)}>x</Button>
-          </div>
-        ))}
-      </div>
+      <StyleRoot>
+        <div className="container" style={animations.fadeInLeft}>
+          <h3>ALL EVENTS</h3>
+          {events.map((event) => (
+            <div key={event.id} className="row">
+              <EventCard event={event} />
+              <Button variant="danger" onClick={() => this.handleDelete(event.id)}>x</Button>
+            </div>
+          ))}
+        </div>
+      </StyleRoot>
     );
   }
 }
 
 AllEventsContainer.propTypes = {
   checkLoginStatus: PropTypes.func.isRequired,
-  // session: PropTypes.object.isRequired,
 };
 
 AllEventsContainer.defaultProps = {

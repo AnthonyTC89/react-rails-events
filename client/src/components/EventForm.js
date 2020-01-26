@@ -2,11 +2,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { StyleRoot } from 'radium';
 import { Button } from 'react-bootstrap';
 import axios from 'axios';
 import uuidv4 from 'uuid/v4';
 import 'bootstrap/dist/css/bootstrap.css';
 import './Form.css';
+import animations from '../animations';
 
 class EventForm extends React.Component {
   constructor(props) {
@@ -97,63 +99,68 @@ class EventForm extends React.Component {
     const { title, description, date, time, location,
       btnLoading, messages, errors } = this.state;
     return (
-      <form onSubmit={!btnLoading ? this.handleSubmit : null}>
-        <h3>Create your event</h3>
-        <input
-          className="form-control"
-          onChange={this.handleChange}
-          type="text"
-          placeholder="title"
-          value={title}
-          name="title"
-          minLength="4"
-          required
-        />
-        <input
-          className="form-control"
-          onChange={this.handleChange}
-          type="text"
-          placeholder="description"
-          value={description}
-          name="description"
-          minLength="4"
-          required
-        />
-        <input
-          className="form-control"
-          onChange={this.handleChange}
-          type="date"
-          placeholder="date"
-          value={date}
-          name="date"
-          required
-        />
-        <input
-          className="form-control"
-          onChange={this.handleChange}
-          type="time"
-          placeholder="time"
-          value={time}
-          name="time"
-        />
-        <input
-          className="form-control"
-          onChange={this.handleChange}
-          type="text"
-          placeholder="location"
-          value={location}
-          name="location"
-        />
-        <ul className="text-success">
-          {messages.map((msg) => <li key={uuidv4()}><small>{msg}</small></li>)}
-        </ul>
-        <ul className="text-danger">
-          {errors.map((err) => <li key={uuidv4()}><small>{err}</small></li>)}
-        </ul>
-        <Button type="submit" variant="primary" disabled={btnLoading}>
-          {btnLoading ? 'Loading…' : 'Create'}
-        </Button>
-      </form>
+      <StyleRoot>
+        <form
+          onSubmit={!btnLoading ? this.handleSubmit : null}
+          style={animations.fadeInLeft}
+        >
+          <h3>Create your event</h3>
+          <input
+            className="form-control"
+            onChange={this.handleChange}
+            type="text"
+            placeholder="title"
+            value={title}
+            name="title"
+            minLength="4"
+            required
+          />
+          <input
+            className="form-control"
+            onChange={this.handleChange}
+            type="text"
+            placeholder="description"
+            value={description}
+            name="description"
+            minLength="4"
+            required
+          />
+          <input
+            className="form-control"
+            onChange={this.handleChange}
+            type="date"
+            placeholder="date"
+            value={date}
+            name="date"
+            required
+          />
+          <input
+            className="form-control"
+            onChange={this.handleChange}
+            type="time"
+            placeholder="time"
+            value={time}
+            name="time"
+          />
+          <input
+            className="form-control"
+            onChange={this.handleChange}
+            type="text"
+            placeholder="location"
+            value={location}
+            name="location"
+          />
+          <ul className="text-success">
+            {messages.map((msg) => <li key={uuidv4()}><small>{msg}</small></li>)}
+          </ul>
+          <ul className="text-danger">
+            {errors.map((err) => <li key={uuidv4()}><small>{err}</small></li>)}
+          </ul>
+          <Button type="submit" variant="primary" disabled={btnLoading}>
+            {btnLoading ? 'Loading…' : 'Create'}
+          </Button>
+        </form>
+      </StyleRoot>
     );
   }
 }

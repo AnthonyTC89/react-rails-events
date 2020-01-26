@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { StyleRoot } from 'radium';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
 import loginStatus from '../redux/actions/loginStatus';
 import UserInfo from '../components/UserInfo';
+import animations from '../animations';
 
 class UsersContainer extends React.Component {
   constructor(props) {
@@ -34,9 +36,11 @@ class UsersContainer extends React.Component {
   render() {
     const { users } = this.state;
     return (
-      <div className="container">
-        {users.map((user) => <UserInfo key={user.id} user={user} />)}
-      </div>
+      <StyleRoot>
+        <div className="container" style={animations.fadeInRight}>
+          {users.map((user) => <UserInfo key={user.id} user={user} />)}
+        </div>
+      </StyleRoot>
     );
   }
 }

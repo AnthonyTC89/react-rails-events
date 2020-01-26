@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Button } from 'react-bootstrap';
+import { StyleRoot } from 'radium';
 import uuidv4 from 'uuid/v4';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -9,7 +10,9 @@ import loginStatus from '../redux/actions/loginStatus';
 import EventCard from '../components/EventCard';
 import updateDashboard from '../redux/actions/updateDashboard';
 import iconEdit from '../images/iconEdit.png';
+import animations from '../animations';
 import './EventContainer.css';
+
 
 class MyEventsContainer extends React.Component {
   constructor(props) {
@@ -58,20 +61,22 @@ class MyEventsContainer extends React.Component {
   render() {
     const { events, errors } = this.state;
     return (
-      <div className="container">
-        <h3>My Events</h3>
-        <ul className="text-danger">
-          {errors.map((err) => <li key={uuidv4()}><small>{err}</small></li>)}
-        </ul>
-        {events.map((event) => (
-          <div key={event.id} className="row">
-            <EventCard event={event} />
-            <Button variant="info" onClick={() => this.handleEdit(event)}>
-              <img className="icon" src={iconEdit} alt="icon-edit" />
-            </Button>
-          </div>
-        ))}
-      </div>
+      <StyleRoot>
+        <div className="container" style={animations.fadeInRight}>
+          <h3>My Events</h3>
+          <ul className="text-danger">
+            {errors.map((err) => <li key={uuidv4()}><small>{err}</small></li>)}
+          </ul>
+          {events.map((event) => (
+            <div key={event.id} className="row">
+              <EventCard event={event} />
+              <Button variant="info" onClick={() => this.handleEdit(event)}>
+                <img className="icon" src={iconEdit} alt="icon-edit" />
+              </Button>
+            </div>
+          ))}
+        </div>
+      </StyleRoot>
     );
   }
 }

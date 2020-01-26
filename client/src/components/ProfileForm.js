@@ -2,12 +2,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { StyleRoot } from 'radium';
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
 import uuidv4 from 'uuid/v4';
 import { Image, Button } from 'react-bootstrap';
 import loginStatus from '../redux/actions/loginStatus';
 import updateSession from '../redux/actions/updateSession';
+import animations from '../animations';
 import 'bootstrap/dist/css/bootstrap.css';
 import './Form.css';
 
@@ -133,59 +135,64 @@ class ProfileForm extends React.Component {
     ) : null;
 
     return (
-      <form onSubmit={!btnUpdateLoading ? this.handleSubmit : null}>
-        <a href={gravatar} target="_blank" rel="noopener noreferrer">
-          <Image className="img-profile" src={url} roundedCircle />
-        </a>
-        <input
-          className="form-control"
-          onChange={this.handleChange}
-          type="text"
-          placeholder="email"
-          value={username}
-          name="username"
-          minLength="4"
-          required
-        />
-        <input
-          className="form-control"
-          type="text"
-          placeholder="email"
-          value={email}
-          name="email"
-          required
-          minLength="4"
-          disabled
-        />
-        <input
-          className="form-control"
-          onChange={this.handleChange}
-          type="password"
-          placeholder="password"
-          value={password}
-          name="password"
-          required
-        />
-        <input
-          className="form-control"
-          onChange={this.handleChange}
-          type="password"
-          placeholder="password confirmation"
-          value={confirmation}
-          name="confirmation"
-          required
-        />
-        <ul className="text-success">
-          {messages.map((msg) => <li key={uuidv4()}><small>{msg}</small></li>)}
-        </ul>
-        <ul className="text-danger">
-          {errors.map((err) => <li key={uuidv4()}><small>{err}</small></li>)}
-        </ul>
-        <Button type="submit" variant="primary" disabled={btnUpdateLoading}>
-          {btnUpdateLoading ? 'Loading…' : 'Update'}
-        </Button>
-        {btnUpgrade}
-      </form>
+      <StyleRoot>
+        <form
+          onSubmit={!btnUpdateLoading ? this.handleSubmit : null}
+          style={animations.fadeInUp}
+        >
+          <a href={gravatar} target="_blank" rel="noopener noreferrer">
+            <Image className="img-profile" src={url} roundedCircle />
+          </a>
+          <input
+            className="form-control"
+            onChange={this.handleChange}
+            type="text"
+            placeholder="email"
+            value={username}
+            name="username"
+            minLength="4"
+            required
+          />
+          <input
+            className="form-control"
+            type="text"
+            placeholder="email"
+            value={email}
+            name="email"
+            required
+            minLength="4"
+            disabled
+          />
+          <input
+            className="form-control"
+            onChange={this.handleChange}
+            type="password"
+            placeholder="password"
+            value={password}
+            name="password"
+            required
+          />
+          <input
+            className="form-control"
+            onChange={this.handleChange}
+            type="password"
+            placeholder="password confirmation"
+            value={confirmation}
+            name="confirmation"
+            required
+          />
+          <ul className="text-success">
+            {messages.map((msg) => <li key={uuidv4()}><small>{msg}</small></li>)}
+          </ul>
+          <ul className="text-danger">
+            {errors.map((err) => <li key={uuidv4()}><small>{err}</small></li>)}
+          </ul>
+          <Button type="submit" variant="primary" disabled={btnUpdateLoading}>
+            {btnUpdateLoading ? 'Loading…' : 'Update'}
+          </Button>
+          {btnUpgrade}
+        </form>
+      </StyleRoot>
     );
   }
 }

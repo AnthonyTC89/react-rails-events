@@ -1,9 +1,11 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { StyleRoot } from 'radium';
 import { connect } from 'react-redux';
 import NavbarContainer from './NavbarContainer';
 import loginStatus from '../redux/actions/loginStatus';
+import animations from '../animations';
 
 class Dashboard extends React.Component {
   componentDidMount() {
@@ -19,7 +21,11 @@ class Dashboard extends React.Component {
     const { NameComponent, arg } = dashboard.Component;
     return (
       <div>
-        <NavbarContainer />
+        <StyleRoot>
+          <div style={animations.fadeInUp}>
+            <NavbarContainer />
+          </div>
+        </StyleRoot>
         <NameComponent arg={arg} />
       </div>
     );

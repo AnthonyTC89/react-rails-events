@@ -10,9 +10,10 @@ import uuidv4 from 'uuid/v4';
 import login from '../redux/actions/login';
 import logout from '../redux/actions/logout';
 import loginStatus from '../redux/actions/loginStatus';
+import animations from '../animations';
 import 'bootstrap/dist/css/bootstrap.css';
 import './Form.css';
-import animations from '../animations';
+
 
 class LoginForm extends React.Component {
   constructor(props) {

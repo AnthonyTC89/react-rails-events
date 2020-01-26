@@ -1,10 +1,12 @@
 /* eslint-disable object-curly-newline */
 import React from 'react';
 import { connect } from 'react-redux';
+import { StyleRoot } from 'radium';
 import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import uuidv4 from 'uuid/v4';
+import animations from '../animations';
 import 'bootstrap/dist/css/bootstrap.css';
 import './Form.css';
 
@@ -71,61 +73,66 @@ class EventUpdateForm extends React.Component {
     const { title, description, date, time, location,
       messages, errors, btnLoading } = this.state;
     return (
-      <form onSubmit={!btnLoading ? this.handleSubmit : null}>
-        <h3>Edit your Event</h3>
-        <input
-          className="form-control"
-          onChange={this.handleChange}
-          type="text"
-          placeholder="title"
-          value={title}
-          name="title"
-          required
-        />
-        <input
-          className="form-control"
-          onChange={this.handleChange}
-          type="text"
-          placeholder="description"
-          value={description}
-          name="description"
-          required
-        />
-        <input
-          className="form-control"
-          onChange={this.handleChange}
-          type="date"
-          placeholder="date"
-          value={date}
-          name="date"
-          required
-        />
-        <input
-          className="form-control"
-          onChange={this.handleChange}
-          type="time"
-          placeholder="time"
-          value={time}
-          name="time"
-        />
-        <input
-          className="form-control"
-          onChange={this.handleChange}
-          type="text"
-          placeholder="location"
-          value={location}
-          name="location"
-        />
-        <ul className="text-success">
-          {messages.map((msg) => <li key={uuidv4()}><small>{msg}</small></li>)}
-        </ul>
-        <ul className="text-danger">
-          {errors.map((err) => <li key={uuidv4()}><small>{err}</small></li>)}
-        </ul>
-        <Button type="submit" variant="primary" disabled={btnLoading}>
-          {btnLoading ? 'Loading…' : 'Update'}
-        </Button>
-      </form>
+      <StyleRoot>
+        <form
+          onSubmit={!btnLoading ? this.handleSubmit : null}
+          style={animations.fadeInLeft}
+        >
+          <h3>Edit your Event</h3>
+          <input
+            className="form-control"
+            onChange={this.handleChange}
+            type="text"
+            placeholder="title"
+            value={title}
+            name="title"
+            required
+          />
+          <input
+            className="form-control"
+            onChange={this.handleChange}
+            type="text"
+            placeholder="description"
+            value={description}
+            name="description"
+            required
+          />
+          <input
+            className="form-control"
+            onChange={this.handleChange}
+            type="date"
+            placeholder="date"
+            value={date}
+            name="date"
+            required
+          />
+          <input
+            className="form-control"
+            onChange={this.handleChange}
+            type="time"
+            placeholder="time"
+            value={time}
+            name="time"
+          />
+          <input
+            className="form-control"
+            onChange={this.handleChange}
+            type="text"
+            placeholder="location"
+            value={location}
+            name="location"
+          />
+          <ul className="text-success">
+            {messages.map((msg) => <li key={uuidv4()}><small>{msg}</small></li>)}
+          </ul>
+          <ul className="text-danger">
+            {errors.map((err) => <li key={uuidv4()}><small>{err}</small></li>)}
+          </ul>
+          <Button type="submit" variant="primary" disabled={btnLoading}>
+            {btnLoading ? 'Loading…' : 'Update'}
+          </Button>
+        </form>
+      </StyleRoot>
     );
   }
 }

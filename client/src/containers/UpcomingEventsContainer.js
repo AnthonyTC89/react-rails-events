@@ -3,13 +3,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { StyleRoot } from 'radium';
 import { Button } from 'react-bootstrap';
 import axios from 'axios';
 import uuidv4 from 'uuid/v4';
-import 'bootstrap/dist/css/bootstrap.css';
 import loginStatus from '../redux/actions/loginStatus';
 import EventCard from '../components/EventCard';
 import ToogleSwitch from '../components/ToogleSwitch';
+import animations from '../animations';
+import 'bootstrap/dist/css/bootstrap.css';
 import './EventContainer.css';
 
 class UpcomingEventsContainer extends React.Component {
@@ -119,28 +121,30 @@ class UpcomingEventsContainer extends React.Component {
   render() {
     const { events, joinEvents, filter, errors } = this.state;
     return (
-      <div className="container">
-        <h3>UPCOMING EVENTS</h3>
-        <ul className="text-danger">
-          {errors.map((err) => <li key={uuidv4()}><small>{err}</small></li>)}
-        </ul>
-        <ToogleSwitch onChange={this.handleSwitch} onSwitch={filter} textRight="Joined events " />
-        {events.map((event) => {
-          if (filter && !joinEvents.includes(event.id)) {
-            return null;
-          }
-          return (
-            <div key={event.id} className="row">
-              <EventCard event={event} />
-              {
-                joinEvents.includes(event.id)
-                  ? <Button variant="danger" onClick={() => this.handleLeaveEvent(event.id)}>-</Button>
-                  : <Button variant="info" onClick={() => this.handleJoinEvent(event.id)}>+</Button>
-              }
-            </div>
-          );
-        })}
-      </div>
+      <StyleRoot>
+        <div className="container" style={animations.fadeInUp}>
+          <h3>UPCOMING EVENTS</h3>
+          <ul className="text-danger">
+            {errors.map((err) => <li key={uuidv4()}><small>{err}</small></li>)}
+          </ul>
+          <ToogleSwitch onChange={this.handleSwitch} onSwitch={filter} textRight="Joined events " />
+          {events.map((event) => {
+            if (filter && !joinEvents.includes(event.id)) {
+              return null;
+            }
+            return (
+              <div key={event.id} className="row">
+                <EventCard event={event} />
+                {
+                  joinEvents.includes(event.id)
+                    ? <Button variant="danger" onClick={() => this.handleLeaveEvent(event.id)}>-</Button>
+                    : <Button variant="info" onClick={() => this.handleJoinEvent(event.id)}>+</Button>
+                }
+              </div>
+            );
+          })}
+        </div>
+      </StyleRoot>
     );
   }
 }
