@@ -67,8 +67,8 @@ class ProfileForm extends React.Component {
         this.setState({
           btnUpdateLoading: false,
           btnUpgradeLoading: false,
-          errors: [],
-          messages: ['Connection failed.', error.response.statusText],
+          errors: ['Connection failed.', error.response.statusText],
+          messages: [],
         });
       });
   }
@@ -144,6 +144,7 @@ class ProfileForm extends React.Component {
           placeholder="email"
           value={username}
           name="username"
+          minLength="4"
           required
         />
         <input
@@ -153,6 +154,7 @@ class ProfileForm extends React.Component {
           value={email}
           name="email"
           required
+          minLength="4"
           disabled
         />
         <input

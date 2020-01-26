@@ -1,15 +1,16 @@
 /* eslint-disable object-curly-newline */
 import React from 'react';
 import { connect } from 'react-redux';
+import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import uuidv4 from 'uuid/v4';
 import 'bootstrap/dist/css/bootstrap.css';
 import './Form.css';
 
 class EventUpdateForm extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props);
     this.state = {
       id: props.arg.id,
       title: props.arg.title,
@@ -18,6 +19,8 @@ class EventUpdateForm extends React.Component {
       time: props.arg.time.slice(11, 16),
       location: props.arg.location,
       user_id: props.session.user.user_id,
+      btnLoading: false,
+      messages: [],
       errors: [],
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -30,7 +33,7 @@ class EventUpdateForm extends React.Component {
     });
   }
 
-  handleSubmit(e) {
+  async handleSubmit(e) {
     e.preventDefault();
     // eslint-disable-next-line camelcase
     const { id, title, description, date, time, location, user_id } = this.state;
@@ -44,21 +47,32 @@ class EventUpdateForm extends React.Component {
       status: 1,
       user_id,
     };
-
-    axios.put(`api/v1/events/${id}`, { event }, { withCredentials: true })
+    this.setState({
+      btnLoading: true,
+    });
+    await axios.put(`api/v1/events/${id}`, { event }, { withCredentials: true })
       .then((response) => {
-        console.log(response);
+        this.setState({
+          btnLoading: false,
+          errors: [],
+          messages: [response.statusText, 'Event updated.'],
+        });
       })
       .catch((error) => {
-        console.log('api errors: ', error);
+        this.setState({
+          btnLoading: false,
+          errors: ['Connection failed.', error.response.statusText],
+          messages: [],
+        });
       });
   }
 
   render() {
-    const { title, description, date, time, location, errors } = this.state;
-    console.log(time);
+    const { title, description, date, time, location,
+      messages, errors, btnLoading } = this.state;
     return (
-      <form onSubmit={this.handleSubmit} className="form">
+      <form onSubmit={!btnLoading ? this.handleSubmit : null}>
+        <h3>Edit your Event</h3>
         <input
           className="form-control"
           onChange={this.handleChange}
@@ -102,13 +116,15 @@ class EventUpdateForm extends React.Component {
           value={location}
           name="location"
         />
-        <button type="submit">Update</button>
-        <div className="form-group">
-          {/* <Spinner animation="border" role="status">
-            <span className="sr-only">Loading...</span>
-          </Spinner> */}
-          <span>{errors}</span>
-        </div>
+        <ul className="text-success">
+          {messages.map((msg) => <li key={uuidv4()}><small>{msg}</small></li>)}
+        </ul>
+        <ul className="text-danger">
+          {errors.map((err) => <li key={uuidv4()}><small>{err}</small></li>)}
+        </ul>
+        <Button type="submit" variant="primary" disabled={btnLoading}>
+          {btnLoading ? 'Loading…' : 'Update'}
+        </Button>
       </form>
     );
   }
@@ -122,10 +138,6 @@ EventUpdateForm.propTypes = {
 const mapStateToProps = (state) => ({
   session: state.session,
 });
-
-// const mapDispatchToProps = (dispatch) => ({
-
-// });
 
 const EventUpdateWrapper = connect(mapStateToProps, null)(EventUpdateForm);
 

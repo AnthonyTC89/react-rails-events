@@ -2,7 +2,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Button } from 'react-bootstrap';
 import axios from 'axios';
+import uuidv4 from 'uuid/v4';
 import 'bootstrap/dist/css/bootstrap.css';
 import './Form.css';
 
@@ -16,6 +18,7 @@ class EventForm extends React.Component {
       time: '',
       location: '',
       user_id: props.session.user.id,
+      messages: [],
       errors: [],
     };
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -40,10 +43,18 @@ class EventForm extends React.Component {
     });
   }
 
-  handleSubmit(e) {
+  async handleSubmit(e) {
     e.preventDefault();
     // eslint-disable-next-line camelcase
     const { title, description, date, time, location, user_id } = this.state;
+    const eventDate = new Date(date);
+    const today = new Date();
+    if (eventDate.getTime() < today.getTime()) {
+      this.setState({
+        errors: ['Set a valid date.'],
+      });
+      return;
+    }
     const data = {
       event: {
         title,
@@ -56,23 +67,39 @@ class EventForm extends React.Component {
       },
     };
 
-    axios.post('api/v1/events', data)
+    this.setState({
+      btnLoading: true,
+    });
+
+    await axios.post('api/v1/events', data)
       .then((response) => {
-        console.log(response);
-        this.setDefaultState();
+        this.setState({
+          title: '',
+          description: '',
+          date: '',
+          time: '',
+          location: '',
+          btnLoading: false,
+          messages: [response.statusText],
+          errors: [],
+        });
       })
       .catch((error) => {
-        console.log('api errors: ', error);
+        console.log('api errors: ', error.response);
         this.setState({
-          errors: error,
+          btnLoading: false,
+          messages: [],
+          errors: [error.response.statusText],
         });
       });
   }
 
   render() {
-    const { title, description, date, time, location, errors } = this.state;
+    const { title, description, date, time, location,
+      btnLoading, messages, errors } = this.state;
     return (
-      <form onSubmit={this.handleSubmit} className="form">
+      <form onSubmit={!btnLoading ? this.handleSubmit : null}>
+        <h3>Create your event</h3>
         <input
           className="form-control"
           onChange={this.handleChange}
@@ -80,6 +107,7 @@ class EventForm extends React.Component {
           placeholder="title"
           value={title}
           name="title"
+          minLength="4"
           required
         />
         <input
@@ -89,6 +117,7 @@ class EventForm extends React.Component {
           placeholder="description"
           value={description}
           name="description"
+          minLength="4"
           required
         />
         <input
@@ -116,13 +145,15 @@ class EventForm extends React.Component {
           value={location}
           name="location"
         />
-        <button type="submit">Create</button>
-        <div className="form-group">
-          {/* <Spinner animation="border" role="status">
-            <span className="sr-only">Loading...</span>
-          </Spinner> */}
-          <span>{errors}</span>
-        </div>
+        <ul className="text-success">
+          {messages.map((msg) => <li key={uuidv4()}><small>{msg}</small></li>)}
+        </ul>
+        <ul className="text-danger">
+          {errors.map((err) => <li key={uuidv4()}><small>{err}</small></li>)}
+        </ul>
+        <Button type="submit" variant="primary" disabled={btnLoading}>
+          {btnLoading ? 'Loading…' : 'Create'}
+        </Button>
       </form>
     );
   }

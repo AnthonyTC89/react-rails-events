@@ -63,7 +63,7 @@ class MyEventsContainer extends React.Component {
     const { events } = this.state;
     return (
       <div className="container">
-        <h3>MY EVENTS</h3>
+        <h3>My Events</h3>
         {events.map((event) => (
           <div key={event.id} className="row">
             <EventCard event={event} />
