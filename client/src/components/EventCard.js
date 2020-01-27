@@ -57,14 +57,4 @@ EventCard.propTypes = {
   event: PropTypes.object.isRequired,
 };
 
-// const mapStateToProps = (state) => ({
-//   session: state.session,
-// });
-
-// const mapDispatchToProps = (dispatch) => ({
-//   checkLoginStatus: () => dispatch(loginStatus()),
-// });
-
-// const EventInfoWrapper = connect(mapStateToProps, mapDispatchToProps)(EventInfo);
-
 export default EventCard;

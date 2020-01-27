@@ -25,3 +25,6 @@ ul {
   padding: 0;
   margin: 0;
 }
+.bg-secondary {
+  background-color: #59499E !important;
+}
