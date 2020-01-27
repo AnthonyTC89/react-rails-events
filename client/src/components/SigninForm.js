@@ -47,7 +47,7 @@ class SigninForm extends React.Component {
     const { addSession, history } = this.props;
     const data = {
       user: {
-        username: email,
+        username: email.split('@')[0],
         email,
         password,
         password_confirmation: password,

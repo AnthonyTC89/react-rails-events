@@ -4,7 +4,7 @@ module Api::V1
 
     # GET /users
     def index
-      @users = User.all
+      @users = User.all - User.where('status = 1') # All User except 'Admin' users
       render json: @users
     end
 
