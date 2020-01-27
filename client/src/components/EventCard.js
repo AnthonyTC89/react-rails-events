@@ -28,10 +28,12 @@ class EventCard extends React.Component {
       <StyleRoot>
         <div style={animations.fadeInDown}>
           <Card.Body>
+            <Card.Subtitle>
+              <Card.Text>{event.location}</Card.Text>
+            </Card.Subtitle>
             <Card.Text>
               {event.description}
             </Card.Text>
-            <Card.Text>Speaker </Card.Text>
           </Card.Body>
         </div>
       </StyleRoot>
@@ -41,7 +43,8 @@ class EventCard extends React.Component {
         <Card.Header>
           <Card.Title>{event.title}</Card.Title>
           <Card.Subtitle>
-            <Card.Text>{event.location}</Card.Text>
+            <Card.Text>{event.date}</Card.Text>
+            <Card.Text>{event.time.slice(11, 16)}</Card.Text>
           </Card.Subtitle>
         </Card.Header>
         {isClicked ? cardBody : null}
