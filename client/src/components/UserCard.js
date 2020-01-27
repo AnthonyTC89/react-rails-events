@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card } from 'react-bootstrap';
-import './UserCard.css';
+import './Card.css';
 
 const getStatusName = (status) => {
   switch (status) {

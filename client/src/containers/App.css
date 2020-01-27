@@ -1,3 +1,6 @@
 .App-container {
   text-align: center;
 }
+.bg-secondary {
+  background-color: #59499E !important;
+}

@@ -8,7 +8,6 @@ import axios from 'axios';
 import loginStatus from '../redux/actions/loginStatus';
 import EventCard from '../components/EventCard';
 import animations from '../animations';
-import './EventContainer.css';
 import 'bootstrap/dist/css/bootstrap.css';
 
 

@@ -5,9 +5,10 @@ import { StyleRoot } from 'radium';
 import { Button } from 'react-bootstrap';
 import axios from 'axios';
 import uuidv4 from 'uuid/v4';
+import animations from '../animations';
 import 'bootstrap/dist/css/bootstrap.css';
 import './Form.css';
-import animations from '../animations';
+
 
 class EventForm extends React.Component {
   constructor(props) {

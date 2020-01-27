@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Card } from 'react-bootstrap';
 import { StyleRoot } from 'radium';
-import './EventCard.css';
 import animations from '../animations';
+import './Card.css';
+
 
 class EventCard extends React.Component {
   constructor(props) {

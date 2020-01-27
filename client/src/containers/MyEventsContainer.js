@@ -5,14 +5,12 @@ import { Button, Spinner } from 'react-bootstrap';
 import { StyleRoot } from 'radium';
 import uuidv4 from 'uuid/v4';
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.css';
 import loginStatus from '../redux/actions/loginStatus';
 import EventCard from '../components/EventCard';
 import updateDashboard from '../redux/actions/updateDashboard';
 import iconEdit from '../images/iconEdit.png';
 import animations from '../animations';
-import './EventContainer.css';
-
+import 'bootstrap/dist/css/bootstrap.css';
 
 class MyEventsContainer extends React.Component {
   constructor(props) {

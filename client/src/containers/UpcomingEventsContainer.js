@@ -11,7 +11,6 @@ import EventCard from '../components/EventCard';
 import ToogleSwitch from '../components/ToogleSwitch';
 import animations from '../animations';
 import 'bootstrap/dist/css/bootstrap.css';
-import './EventContainer.css';
 
 class UpcomingEventsContainer extends React.Component {
   constructor(props) {
