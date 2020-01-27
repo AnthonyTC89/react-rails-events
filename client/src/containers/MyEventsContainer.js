@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Button } from 'react-bootstrap';
+import { Button, Spinner } from 'react-bootstrap';
 import { StyleRoot } from 'radium';
 import uuidv4 from 'uuid/v4';
 import axios from 'axios';
@@ -20,6 +20,7 @@ class MyEventsContainer extends React.Component {
     this.state = {
       events: [],
       errors: [],
+      isLoading: false,
     };
   }
 
@@ -29,26 +30,25 @@ class MyEventsContainer extends React.Component {
     this.getMyEvents();
   }
 
-  setStateDeafult() {
+  async getMyEvents() {
     this.setState({
-      events: [],
+      isLoading: true,
     });
-  }
-
-  getMyEvents() {
     const { session } = this.props;
     const params = { user_id: session.user.id };
-    axios.get('/api/v1/events', { params }, { withCredentials: true })
+    await axios.get('/api/v1/events', { params }, { withCredentials: true })
       .then((response) => {
         this.setState({
           events: response.data,
           errors: [],
+          isLoading: false,
         });
       })
       .catch((error) => {
         this.setState({
           events: [],
           errors: ['Connection failed.', error.response.statusText],
+          isLoading: false,
         });
       });
   }
@@ -59,11 +59,12 @@ class MyEventsContainer extends React.Component {
   }
 
   render() {
-    const { events, errors } = this.state;
+    const { events, errors, isLoading } = this.state;
     return (
       <StyleRoot>
         <div className="container" style={animations.fadeInRight}>
           <h3>My Events</h3>
+          {isLoading ? <Spinner animation="border" /> : null}
           <ul className="text-danger">
             {errors.map((err) => <li key={uuidv4()}><small>{err}</small></li>)}
           </ul>

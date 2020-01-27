@@ -2,19 +2,24 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { StyleRoot } from 'radium';
-import { Button } from 'react-bootstrap';
+import { Button, Spinner } from 'react-bootstrap';
+import uuidv4 from 'uuid/v4';
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.css';
 import loginStatus from '../redux/actions/loginStatus';
 import EventCard from '../components/EventCard';
-import './EventContainer.css';
 import animations from '../animations';
+import './EventContainer.css';
+import 'bootstrap/dist/css/bootstrap.css';
+
 
 class AllEventsContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       events: [],
+      isLoading: false,
+      messages: [],
+      errors: [],
     };
   }
 
@@ -24,38 +29,64 @@ class AllEventsContainer extends React.Component {
     this.getAllEvents();
   }
 
-  setStateDeafult() {
+  async getAllEvents() {
     this.setState({
-      events: [],
+      isLoading: true,
+      messages: [],
+      errors: [],
     });
-  }
-
-  getAllEvents() {
-    axios.get('/api/v1/events', { withCredentials: true })
+    await axios.get('/api/v1/events', { withCredentials: true })
       .then((response) => {
         this.setState({
           events: response.data,
+          isLoading: false,
         });
       })
-      .catch((error) => console.log('api errors:', error));
+      .catch((error) => {
+        this.setState({
+          events: [],
+          errors: ['Connection failed.', error.response.statusText],
+          isLoading: false,
+        });
+      });
   }
 
-  handleDelete(id) {
-    axios.delete(`api/v1/events/${id}`, { withCredentials: true })
+  async handleDelete(id) {
+    this.setState({
+      isLoading: true,
+      messages: [],
+      errors: [],
+    });
+    await axios.delete(`api/v1/events/${id}`, { withCredentials: true })
       .then((response) => {
         this.setState({
           events: response.data,
+          isLoading: false,
+          messages: ['Event deleted.'],
         });
       })
-      .catch((error) => console.log('api errors:', error));
+      .catch((error) => {
+        this.setState({
+          events: [],
+          isLoading: false,
+          errors: ['Connection failed.', error.response.statusText],
+        });
+      });
   }
 
   render() {
-    const { events } = this.state;
+    const { events, isLoading, messages, errors } = this.state;
     return (
       <StyleRoot>
         <div className="container" style={animations.fadeInLeft}>
           <h3>ALL EVENTS</h3>
+          <ul className="text-success">
+            {messages.map((msg) => <li key={uuidv4()}><small>{msg}</small></li>)}
+          </ul>
+          <ul className="text-danger">
+            {errors.map((err) => <li key={uuidv4()}><small>{err}</small></li>)}
+          </ul>
+          {isLoading ? <Spinner animation="border" /> : null}
           {events.map((event) => (
             <div key={event.id} className="row">
               <EventCard event={event} />

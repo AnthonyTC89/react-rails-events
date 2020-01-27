@@ -1,10 +1,9 @@
-/* eslint-disable object-curly-newline */
 /* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { StyleRoot } from 'radium';
-import { Button } from 'react-bootstrap';
+import { Button, Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import uuidv4 from 'uuid/v4';
 import loginStatus from '../redux/actions/loginStatus';
@@ -20,6 +19,7 @@ class UpcomingEventsContainer extends React.Component {
     this.state = {
       events: [],
       joinEvents: [],
+      isLoading: false,
       filter: false,
       errors: [],
     };
@@ -30,21 +30,26 @@ class UpcomingEventsContainer extends React.Component {
     const { checkLoginStatus } = this.props;
     checkLoginStatus();
     this.getUpcomingEvents();
-    this.getJoinEvents();
   }
 
-  getUpcomingEvents() {
+  async getUpcomingEvents() {
+    this.setState({
+      isLoading: true,
+    });
     const params = { date: new Date() };
-    axios.get('/api/v1/events', { params }, { withCredentials: true })
+    await axios.get('/api/v1/events', { params }, { withCredentials: true })
       .then((response) => {
+        this.getJoinEvents();
         this.setState({
           events: response.data,
+          isLoading: false,
           errors: [],
         });
       })
       .catch((error) => {
         this.setState({
           errors: ['Connection failed.', error.response.statusText],
+          isLoading: false,
         });
       });
   }
@@ -68,7 +73,7 @@ class UpcomingEventsContainer extends React.Component {
       });
   }
 
-  handleJoinEvent(event_id) {
+  async handleJoinEvent(event_id) {
     const { session } = this.props;
     const { joinEvents } = this.state;
     const params = {
@@ -76,37 +81,47 @@ class UpcomingEventsContainer extends React.Component {
       event_id,
       status: 1,
     };
-    axios.post('/api/v1/attendees', params)
+    this.setState({
+      isLoading: true,
+    });
+    await axios.post('/api/v1/attendees', params)
       .then(() => {
         this.setState({
           joinEvents: [...joinEvents, event_id],
           errors: [],
+          isLoading: false,
         });
       })
       .catch((error) => {
         this.setState({
           errors: ['Connection failed.', error.response.statusText],
+          isLoading: false,
         });
       });
   }
 
-  handleLeaveEvent(event_id) {
+  async handleLeaveEvent(event_id) {
     const { session } = this.props;
     const { joinEvents } = this.state;
     const params = {
       user_id: session.user.id,
       event_id,
     };
-    axios.delete('/api/v1/attendees/leave', { params })
+    this.setState({
+      isLoading: true,
+    });
+    await axios.delete('/api/v1/attendees/leave', { params })
       .then(() => {
         this.setState({
           joinEvents: joinEvents.filter((eventID) => eventID !== event_id),
           errors: [],
+          isLoading: false,
         });
       })
       .catch((error) => {
         this.setState({
           errors: ['Connection failed.', error.response.statusText],
+          isLoading: false,
         });
       });
   }
@@ -119,11 +134,12 @@ class UpcomingEventsContainer extends React.Component {
   }
 
   render() {
-    const { events, joinEvents, filter, errors } = this.state;
+    const { events, joinEvents, filter, errors, isLoading } = this.state;
     return (
       <StyleRoot>
         <div className="container" style={animations.fadeInUp}>
           <h3>UPCOMING EVENTS</h3>
+          {isLoading ? <Spinner animation="border" /> : null}
           <ul className="text-danger">
             {errors.map((err) => <li key={uuidv4()}><small>{err}</small></li>)}
           </ul>

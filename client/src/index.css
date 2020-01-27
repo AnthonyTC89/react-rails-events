@@ -19,3 +19,14 @@ code {
 .icon {
   width: 1.7rem;
 }
+
+.img-user {
+  width: 3rem;
+  margin: 0;
+  padding: 0;
+}
+
+.row {
+  justify-content: center;
+  margin: 0;
+}

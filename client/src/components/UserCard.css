@@ -1,0 +1,14 @@
+.user-card{
+  width: 15rem;
+}
+.card-body {
+  text-align: left;
+  padding: 1rem;
+}
+.card-subtitle {
+  display: flex;
+  justify-content: space-around;
+}
+p {
+  display: inline;
+}

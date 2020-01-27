@@ -34,20 +34,20 @@ async function upgradeStatus(user) {
 
 const UserInfo = (props) => {
   const [isLoading, setLoading] = useState(false);
-  const handleClick = () => setLoading(true);
+  // const handleClick = () => setLoading(true);
   const { user } = props;
   const hash = CryptoJS.MD5(user.email);
   const url = `http://www.gravatar.com/avatar/${hash}`;
   const statusName = getStatusName(user.status);
-  const btnUpgrade = user.status === 4 ? (
-    <Button
-      variant="primary"
-      disabled={isLoading}
-      onClick={!isLoading ? handleClick : null}
-    >
-      {isLoading ? 'Loading…' : 'Upgrade'}
-    </Button>
-  ) : null;
+  // const btnUpgrade = user.status === 4 ? (
+  //   <Button
+  //     variant="primary"
+  //     disabled={isLoading}
+  //     onClick={!isLoading ? handleClick : null}
+  //   >
+  //     {isLoading ? 'Loading…' : 'Upgrade'}
+  //   </Button>
+  // ) : null;
 
   useEffect(() => {
     if (isLoading) {
@@ -60,18 +60,18 @@ const UserInfo = (props) => {
   return (
     <div className="row">
       <div className="col-2">
-        <Image src={url} roundedCircle />
+        <Image className="img-user" src={url} roundedCircle />
       </div>
       <div className="col-6">
-        <p>{user.username}</p>
-        <p>{user.email}</p>
+        <h4>{user.username}</h4>
+        <small>{user.email}</small>
       </div>
       <div className="col-2">
-        {statusName}
+        <p>{statusName}</p>
       </div>
-      <div className="col-2">
+      {/* <div className="col-2">
         {btnUpgrade}
-      </div>
+      </div> */}
     </div>
   );
 };

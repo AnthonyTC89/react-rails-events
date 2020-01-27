@@ -1,4 +1,3 @@
-/* eslint-disable object-curly-newline */
 import { fadeIn, fadeInDown, fadeInUp, fadeInLeft, fadeInRight } from 'react-animations';
 import Radium from 'radium';
 
