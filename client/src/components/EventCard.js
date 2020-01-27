@@ -5,7 +5,6 @@ import { StyleRoot } from 'radium';
 import animations from '../animations';
 import './Card.css';
 
-
 class EventCard extends React.Component {
   constructor(props) {
     super(props);
