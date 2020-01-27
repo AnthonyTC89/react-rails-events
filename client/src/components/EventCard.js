@@ -1,28 +1,54 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card } from 'react-bootstrap';
+import { StyleRoot } from 'radium';
 import './EventCard.css';
+import animations from '../animations';
 
-const EventCard = (props) => {
-  const { event } = props;
-  const handleClick = (Component) => {
-    console.log(Component);
-  };
+class EventCard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isClicked: false,
+    };
+    this.handleClick = this.handleClick.bind(this);
+  }
 
-  return (
-    <Card className="event-card">
-      <Card.Body
-        onClick={() => handleClick({ Component: 'EventInfo', arg: event })}
-      >
-        <Card.Title>{event.title}</Card.Title>
-        <Card.Subtitle>
-          <Card.Text>Speaker </Card.Text>
-          <Card.Text>{event.location}</Card.Text>
-        </Card.Subtitle>
-      </Card.Body>
-    </Card>
-  );
-};
+  handleClick() {
+    const { isClicked } = this.state;
+    this.setState({
+      isClicked: !isClicked,
+    });
+  }
+
+  render() {
+    const { event } = this.props;
+    const { isClicked } = this.state;
+    const cardBody = (
+      <StyleRoot>
+        <div style={animations.fadeInDown}>
+          <Card.Body>
+            <Card.Text>
+              {event.description}
+            </Card.Text>
+            <Card.Text>Speaker </Card.Text>
+          </Card.Body>
+        </div>
+      </StyleRoot>
+    );
+    return (
+      <Card className="event-card" onClick={this.handleClick}>
+        <Card.Header>
+          <Card.Title>{event.title}</Card.Title>
+          <Card.Subtitle>
+            <Card.Text>{event.location}</Card.Text>
+          </Card.Subtitle>
+        </Card.Header>
+        {isClicked ? cardBody : null}
+      </Card>
+    );
+  }
+}
 
 EventCard.propTypes = {
   event: PropTypes.object.isRequired,
