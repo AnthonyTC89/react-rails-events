@@ -1,16 +1,18 @@
+# frozen_string_literal: true
+
 module Api::V1
   class AttendeesController < ApplicationController
-    before_action :set_attendee, only: [:show, :update, :destroy]
+    before_action :set_attendee, only: %i[show update destroy]
 
     # GET /attendees
     def index
       if params[:user_id]
         @attendees = Attendee.where('user_id = ? AND status = 1', params[:user_id])
-        @attendees = @attendees.collect {|att| att.event_id}
+        @attendees = @attendees.collect(&:event_id)
       else
         @attendees = Attendee.all
       end
-      
+
       render json: @attendees
     end
 
@@ -55,14 +57,15 @@ module Api::V1
     end
 
     private
-      # Use callbacks to share common setup or constraints between actions.
-      def set_attendee
-        @attendee = Attendee.find(params[:id])
-      end
 
-      # Only allow a trusted parameter "white list" through.
-      def attendee_params
-        params.require(:attendee).permit(:user_id, :event_id, :status)
-      end
+    # Use callbacks to share common setup or constraints between actions.
+    def set_attendee
+      @attendee = Attendee.find(params[:id])
+    end
+
+    # Only allow a trusted parameter "white list" through.
+    def attendee_params
+      params.require(:attendee).permit(:user_id, :event_id, :status)
+    end
   end
 end

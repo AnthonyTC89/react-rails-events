@@ -30,7 +30,7 @@ This App is designed for mobile, but it's possible to use in Desktop.
 
 The purpose is to get:
 - A real-world-like project, built with business specifications.
-- You will get feedback about the achievement of technical and soft skills.
+- Get feedback about the achievement of technical and soft skills.
 
 The following are actions that can be done on the application.
   1. Create an Account and Login in to the App. 
@@ -60,10 +60,10 @@ The following are actions that can be done on the application.
   2. cd in to the folder and run `bundle install`
   3. run `rails db:create && rails db:migrate && rails db:seed`
     * (If there are problems with the service of postgresql check DB Section) 
-  3. cd in to /client folder and run `npm install`
-  4. return to root folder and run `rails start`
-  5. wait until both servers will be initialized
-  6. go to [localhost:3000](http://localhost:3000)
+  4. cd in to /client folder and run `npm install`
+  5. return to root folder and run `rails start`
+  6. wait until both servers will be initialized
+  7. go to [localhost:3000](http://localhost:3000)
 
 ### DataBase Setup
   1. Run: `sudo apt-get update && sudo apt-get install postgresql`

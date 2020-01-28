@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module Api::V1
   class SessionsController < ApplicationController
-    #include SessionHelper
+    # include SessionHelper
     def create
       @user = User.find_by(email: session_params[:email])
       if @user
@@ -13,14 +15,14 @@ module Api::V1
             errors: []
           }
         else
-          render json: { 
+          render json: {
             logged_in: false,
             status: :unauthorized,
             errors: ['Password invalid.', 'Try again']
           }
         end
       else
-        render json: { 
+        render json: {
           logged_in: false,
           status: :not_found,
           errors: ['User invalid.', 'Try again or signup']
@@ -28,7 +30,7 @@ module Api::V1
       end
     end
 
-    def is_logged_in?
+    def logged_in?
       if logged_in? && current_user
         render json: {
           logged_in: true,
@@ -45,15 +47,16 @@ module Api::V1
     def destroy
       @user = User.find_by(email: session_params[:email])
       @user.regenerate_auth_token
-        render json: {
-          status: 200,
-          logged_out: true
-        }
+      render json: {
+        status: 200,
+        logged_out: true
+      }
     end
 
     private
-      def session_params
-        params.require(:user).permit(:username, :email, :password)
-      end
+
+    def session_params
+      params.require(:user).permit(:username, :email, :password)
+    end
   end
 end

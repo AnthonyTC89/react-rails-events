@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 module Api::V1
   class EventsController < ApplicationController
-    before_action :set_event, only: [:show, :update, :destroy]
+    before_action :set_event, only: %i[show update destroy]
 
     # GET /events
     def index
@@ -8,11 +10,11 @@ module Api::V1
         @events = Event.where(user_id: params[:user_id])
       elsif params[:date]
         p "params[:date] >>>> #{params[:date]}"
-        @events = Event.where("date >= ?", params[:date])
+        @events = Event.where('date >= ?', params[:date])
       else
         @events = Event.all
       end
-      
+
       render json: @events
     end
 
@@ -49,14 +51,15 @@ module Api::V1
     end
 
     private
-      # Use callbacks to share common setup or constraints between actions.
-      def set_event
-        @event = Event.find(params[:id])
-      end
 
-      # Only allow a trusted parameter "white list" through.
-      def event_params
-        params.require(:event).permit(:title, :description, :date, :time, :location, :status, :user_id)
-      end
+    # Use callbacks to share common setup or constraints between actions.
+    def set_event
+      @event = Event.find(params[:id])
+    end
+
+    # Only allow a trusted parameter "white list" through.
+    def event_params
+      params.require(:event).permit(:title, :description, :date, :time, :location, :status, :user_id)
+    end
   end
 end
