@@ -23,13 +23,15 @@ Style/Documentation:
   Enabled: false
 Style/ClassAndModuleChildren:
   Enabled: false
+Style/CaseEquality:
+  Enabled: false
 
 Layout/LineLength:
-  Max: 120
+  Max: 160
 Layout/HashAlignment:
   EnforcedColonStyle: key
 Layout/ExtraSpacing:
-  AllowForAlignment: false
+  AllowForAlignment: true
 Layout/MultilineMethodCallIndentation:
   Enabled: true
   EnforcedStyle: indented
