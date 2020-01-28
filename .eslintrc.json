@@ -26,6 +26,7 @@
         "react/forbid-prop-types": "off",
         "object-curly-newline": "off",
         "import/no-unresolved": "off",
-        "arrow-parens": "off"
+        "arrow-parens": "off",
+        "jsx-a11y/label-has-for": "off"
     }
 }
