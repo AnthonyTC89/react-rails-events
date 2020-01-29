@@ -65,7 +65,6 @@ class SigninForm extends React.Component {
           confirmation: '',
           btnLoading: false,
         });
-        console.log(response);
         addSession(response.data.user);
         history.push('/dashboard');
       })
