@@ -17,8 +17,16 @@ h3 {
   padding-top: 1rem;
   color: #59499E;
 }
+h4 {
+  color: #FE70A3;
+}
 .h5 {
   color: #59499E;
+}
+h6 {
+  color: #4F9BC4;
+  font-weight: 900;
+  margin-right: auto;
 }
 .custom-switch {
   margin: 1rem auto;
@@ -26,6 +34,9 @@ h3 {
 
 .icon {
   width: 1.7rem;
+}
+.icon-location {
+  margin-right: 0.5rem;
 }
 
 .img-user {
@@ -52,4 +63,11 @@ h3 {
   padding: 0;
   text-align: center;
   width: 2rem;
+}
+
+.DayEventContainer {
+  width: 18rem;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
 }

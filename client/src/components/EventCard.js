@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card } from 'react-bootstrap';
-import { StyleRoot } from 'radium';
-import animations from '../animations';
+import iconLocation from '../images/iconLocation.png';
 import './Card.css';
 
 class EventCard extends React.Component {
@@ -24,30 +23,18 @@ class EventCard extends React.Component {
   render() {
     const { event } = this.props;
     const { isClicked } = this.state;
-    const cardBody = (
-      <StyleRoot>
-        <div style={animations.fadeInDown}>
-          <Card.Body>
-            <Card.Subtitle>
-              <Card.Text>{event.location}</Card.Text>
-            </Card.Subtitle>
-            <Card.Text>
-              {event.description}
-            </Card.Text>
-          </Card.Body>
-        </div>
-      </StyleRoot>
-    );
+    console.log(isClicked);
     return (
       <Card className="event-card" onClick={this.handleClick}>
         <Card.Header>
           <Card.Title>{event.title}</Card.Title>
           <Card.Subtitle>
-            <Card.Text>{event.date}</Card.Text>
-            <Card.Text>{event.time.slice(11, 16)}</Card.Text>
+            <Card.Text>
+              <img className="icon-location" src={iconLocation} alt="icon-location" />
+              {event.location}
+            </Card.Text>
           </Card.Subtitle>
         </Card.Header>
-        {isClicked ? cardBody : null}
       </Card>
     );
   }

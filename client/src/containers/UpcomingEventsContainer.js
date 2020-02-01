@@ -3,11 +3,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { StyleRoot } from 'radium';
-import { Button, Spinner } from 'react-bootstrap';
+import { Spinner } from 'react-bootstrap';
 import axios from 'axios';
 import uuidv4 from 'uuid/v4';
+import lodash from 'lodash';
 import loginStatus from '../redux/actions/loginStatus';
-import EventCard from '../components/EventCard';
+import DayEventContainer from './DayEventContainer';
 import ToogleSwitch from '../components/ToogleSwitch';
 import animations from '../animations';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -17,12 +18,15 @@ class UpcomingEventsContainer extends React.Component {
     super(props);
     this.state = {
       events: [],
+      eventsByDay: {},
       joinEvents: [],
       isLoading: false,
       filter: false,
       errors: [],
     };
     this.handleSwitch = this.handleSwitch.bind(this);
+    this.handleJoinEvent = this.handleJoinEvent.bind(this);
+    this.handleLeaveEvent = this.handleLeaveEvent.bind(this);
   }
 
   componentDidMount() {
@@ -41,11 +45,13 @@ class UpcomingEventsContainer extends React.Component {
         this.getJoinEvents();
         this.setState({
           events: response.data,
+          eventsByDay: lodash.groupBy(response.data, 'date'),
           isLoading: false,
           errors: [],
         });
       })
       .catch((error) => {
+        console.log(error);
         this.setState({
           errors: ['Connection failed.', error.response.statusText],
           isLoading: false,
@@ -53,12 +59,12 @@ class UpcomingEventsContainer extends React.Component {
       });
   }
 
-  getJoinEvents() {
+  async getJoinEvents() {
     const { session } = this.props;
     const params = {
       user_id: session.user.id,
     };
-    axios.get('/api/v1/attendees', { params }, { withCredentials: true })
+    await axios.get('/api/v1/attendees', { params }, { withCredentials: true })
       .then((response) => {
         this.setState({
           joinEvents: response.data,
@@ -72,7 +78,7 @@ class UpcomingEventsContainer extends React.Component {
       });
   }
 
-  async handleJoinEvent(event_id) {
+  handleJoinEvent(event_id) {
     const { session } = this.props;
     const { joinEvents } = this.state;
     const params = {
@@ -83,7 +89,7 @@ class UpcomingEventsContainer extends React.Component {
     this.setState({
       isLoading: true,
     });
-    await axios.post('/api/v1/attendees', params)
+    axios.post('/api/v1/attendees', params)
       .then(() => {
         this.setState({
           joinEvents: [...joinEvents, event_id],
@@ -134,6 +140,8 @@ class UpcomingEventsContainer extends React.Component {
 
   render() {
     const { events, joinEvents, filter, errors, isLoading } = this.state;
+    const eventsByDay = Object.entries(lodash.groupBy(events, 'date'));
+    console.log(eventsByDay);
     return (
       <StyleRoot>
         <div className="container" style={animations.fadeInUp}>
@@ -142,8 +150,32 @@ class UpcomingEventsContainer extends React.Component {
           <ul className="text-danger">
             {errors.map((err) => <li key={uuidv4()}><small>{err}</small></li>)}
           </ul>
-          <ToogleSwitch onChange={this.handleSwitch} onSwitch={filter} textRight="Joined events " />
-          {events.map((event) => {
+          <ToogleSwitch onChange={this.handleSwitch} onSwitch={filter} textRight="Joined events" />
+          {eventsByDay.map((dayEvents, index) => 
+            <DayEventContainer 
+              key={uuidv4()}
+              dayEvents={dayEvents} 
+              index={index} 
+              joinEvents={joinEvents} 
+              filter={filter}
+              handleJoinEvent={this.handleJoinEvent}
+              handleLeaveEvent={this.handleLeaveEvent}
+            />
+            // <div key={uuidv4()} >
+            //   <h4>Day - {index + 1}</h4>
+            //   {day[1].map((event) => (
+            //     <div  key={uuidv4()} className="row">
+            //     <EventCard event={event} />
+            //     {
+            //       joinEvents.includes(event.id)
+            //         ? <Button variant="danger" onClick={() => this.handleLeaveEvent(event.id)}>-</Button>
+            //         : <Button variant="info" onClick={() => this.handleJoinEvent(event.id)}>+</Button>
+            //     }
+            //   </div>
+            //   ))}
+            // </div>
+          )}
+          {/* {events.map((event) => {
             if (filter && !joinEvents.includes(event.id)) {
               return null;
             }
@@ -157,7 +189,7 @@ class UpcomingEventsContainer extends React.Component {
                 }
               </div>
             );
-          })}
+          })} */}
         </div>
       </StyleRoot>
     );

@@ -7,10 +7,10 @@ module Api::V1
     # GET /events
     def index
       if params[:user_id]
-        @events = Event.where(user_id: params[:user_id])
+        @events = Event.where(user_id: params[:user_id]).order(:date, :time)
       elsif params[:date]
         p "params[:date] >>>> #{params[:date]}"
-        @events = Event.where('date >= ?', params[:date])
+        @events = Event.where('date >= ?', params[:date]).order(:date, :time)
       else
         @events = Event.all
       end

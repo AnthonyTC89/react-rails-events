@@ -60,6 +60,7 @@ class NavbarContainer extends React.Component {
 
     return (
       <Navbar collapseOnSelect expand="sm" bg="secondary" variant="dark">
+        <Navbar.Brand>Agenda</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
