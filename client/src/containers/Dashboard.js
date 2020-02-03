@@ -20,14 +20,12 @@ class Dashboard extends React.Component {
     }
     const { NameComponent, arg } = dashboard.Component;
     return (
-      <div>
-        <StyleRoot>
-          <div style={animations.fadeInUp}>
-            <NavbarContainer />
-          </div>
-        </StyleRoot>
+      <StyleRoot>
+        <div style={animations.fadeInUp}>
+          <NavbarContainer />
+        </div>
         <NameComponent arg={arg} />
-      </div>
+      </StyleRoot>
     );
   }
 }

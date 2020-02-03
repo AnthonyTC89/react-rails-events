@@ -1,29 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Card } from 'react-bootstrap';
+import updateDashboard from '../redux/actions/updateDashboard';
 import iconLocation from '../images/iconLocation.png';
 import './Card.css';
 
 class EventCard extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isClicked: false,
-    };
     this.handleClick = this.handleClick.bind(this);
   }
 
   handleClick() {
-    const { isClicked } = this.state;
-    this.setState({
-      isClicked: !isClicked,
-    });
+    const { changeDashboardTo, event } = this.props;
+    changeDashboardTo({ name: 'EventInfo', arg: event });
   }
 
   render() {
     const { event } = this.props;
-    const { isClicked } = this.state;
-    console.log(isClicked);
     return (
       <Card className="event-card" onClick={this.handleClick}>
         <Card.Header>
@@ -42,6 +37,13 @@ class EventCard extends React.Component {
 
 EventCard.propTypes = {
   event: PropTypes.object.isRequired,
+  changeDashboardTo: PropTypes.func.isRequired,
 };
 
-export default EventCard;
+const mapDispatchToProps = (dispatch) => ({
+  changeDashboardTo: (Component) => dispatch(updateDashboard(Component)),
+});
+
+const EventCardWrapper = connect(null, mapDispatchToProps)(EventCard);
+
+export default EventCardWrapper;

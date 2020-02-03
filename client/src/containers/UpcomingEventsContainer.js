@@ -18,7 +18,6 @@ class UpcomingEventsContainer extends React.Component {
     super(props);
     this.state = {
       events: [],
-      eventsByDay: {},
       joinEvents: [],
       isLoading: false,
       filter: false,
@@ -38,6 +37,7 @@ class UpcomingEventsContainer extends React.Component {
   async getUpcomingEvents() {
     this.setState({
       isLoading: true,
+      errors: [],
     });
     const params = { date: new Date() };
     await axios.get('/api/v1/events', { params }, { withCredentials: true })
@@ -45,16 +45,14 @@ class UpcomingEventsContainer extends React.Component {
         this.getJoinEvents();
         this.setState({
           events: response.data,
-          eventsByDay: lodash.groupBy(response.data, 'date'),
           isLoading: false,
-          errors: [],
         });
       })
       .catch((error) => {
-        console.log(error);
         this.setState({
           errors: ['Connection failed.', error.response.statusText],
           isLoading: false,
+          events: [],
         });
       });
   }
@@ -78,7 +76,7 @@ class UpcomingEventsContainer extends React.Component {
       });
   }
 
-  handleJoinEvent(event_id) {
+  async handleJoinEvent(event_id) {
     const { session } = this.props;
     const { joinEvents } = this.state;
     const params = {
@@ -88,12 +86,12 @@ class UpcomingEventsContainer extends React.Component {
     };
     this.setState({
       isLoading: true,
+      errors: [],
     });
-    axios.post('/api/v1/attendees', params)
+    await axios.post('/api/v1/attendees', params)
       .then(() => {
         this.setState({
           joinEvents: [...joinEvents, event_id],
-          errors: [],
           isLoading: false,
         });
       })
@@ -114,12 +112,12 @@ class UpcomingEventsContainer extends React.Component {
     };
     this.setState({
       isLoading: true,
+      errors: [],
     });
     await axios.delete('/api/v1/attendees/leave', { params })
       .then(() => {
         this.setState({
           joinEvents: joinEvents.filter((eventID) => eventID !== event_id),
-          errors: [],
           isLoading: false,
         });
       })
@@ -141,7 +139,6 @@ class UpcomingEventsContainer extends React.Component {
   render() {
     const { events, joinEvents, filter, errors, isLoading } = this.state;
     const eventsByDay = Object.entries(lodash.groupBy(events, 'date'));
-    console.log(eventsByDay);
     return (
       <StyleRoot>
         <div className="container" style={animations.fadeInUp}>
@@ -151,45 +148,17 @@ class UpcomingEventsContainer extends React.Component {
             {errors.map((err) => <li key={uuidv4()}><small>{err}</small></li>)}
           </ul>
           <ToogleSwitch onChange={this.handleSwitch} onSwitch={filter} textRight="Joined events" />
-          {eventsByDay.map((dayEvents, index) => 
-            <DayEventContainer 
+          {eventsByDay.map((dayEvents, index) => (
+            <DayEventContainer
               key={uuidv4()}
-              dayEvents={dayEvents} 
-              index={index} 
-              joinEvents={joinEvents} 
+              dayEvents={dayEvents}
+              index={index}
+              joinEvents={joinEvents}
               filter={filter}
               handleJoinEvent={this.handleJoinEvent}
               handleLeaveEvent={this.handleLeaveEvent}
             />
-            // <div key={uuidv4()} >
-            //   <h4>Day - {index + 1}</h4>
-            //   {day[1].map((event) => (
-            //     <div  key={uuidv4()} className="row">
-            //     <EventCard event={event} />
-            //     {
-            //       joinEvents.includes(event.id)
-            //         ? <Button variant="danger" onClick={() => this.handleLeaveEvent(event.id)}>-</Button>
-            //         : <Button variant="info" onClick={() => this.handleJoinEvent(event.id)}>+</Button>
-            //     }
-            //   </div>
-            //   ))}
-            // </div>
-          )}
-          {/* {events.map((event) => {
-            if (filter && !joinEvents.includes(event.id)) {
-              return null;
-            }
-            return (
-              <div key={event.id} className="row">
-                <EventCard event={event} />
-                {
-                  joinEvents.includes(event.id)
-                    ? <Button variant="danger" onClick={() => this.handleLeaveEvent(event.id)}>-</Button>
-                    : <Button variant="info" onClick={() => this.handleJoinEvent(event.id)}>+</Button>
-                }
-              </div>
-            );
-          })} */}
+          ))}
         </div>
       </StyleRoot>
     );

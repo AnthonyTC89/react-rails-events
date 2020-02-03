@@ -20,7 +20,7 @@ h3 {
 h4 {
   color: #FE70A3;
 }
-.h5 {
+h5, .h5 {
   color: #59499E;
 }
 h6 {
@@ -56,7 +56,9 @@ h6 {
 .dropdown>a:hover {
   color: whitesmoke;
 }
-
+.navbar-brand {
+  margin-left: 1rem;
+}
 .btn-info,.btn-danger {
   font-size: 2rem;
   margin: 0;
@@ -70,4 +72,43 @@ h6 {
   display: flex;
   flex-direction: column;
   margin: auto;
+}
+
+.icon-clock, .icon-location2 {
+  float: left;
+  width: 3rem;
+  margin: 1rem;
+}
+
+.event-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.event-detail, .event-description {
+  background: white;
+  margin: 0.1rem;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+}
+.event-description {
+  flex-direction: column;
+  padding: 1rem;
+  text-align: left;
+}
+
+span {
+  color: #59499E;
+  font-weight: 500;
+}
+
+p {
+  color: #59499E;
+}
+
+strong {
+  color: #59499E;
+  font-weight: 800;
+  text-align: left;
 }

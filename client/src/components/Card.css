@@ -1,5 +1,6 @@
 .user-card, .event-card{
   width: 14rem;
+  cursor: pointer;
 }
 .card-body {
   text-align: left;
