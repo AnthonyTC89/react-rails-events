@@ -5,6 +5,7 @@ import { StyleRoot } from 'radium';
 import { Button } from 'react-bootstrap';
 import axios from 'axios';
 import uuidv4 from 'uuid/v4';
+import ConvertTime from '../ConvertTime';
 import animations from '../animations';
 import 'bootstrap/dist/css/bootstrap.css';
 import './Form.css';
@@ -117,7 +118,7 @@ class EventForm extends React.Component {
     const { messages, errors, btnLoading, attendee, event } = this.state;
     const iconClockUrl = 'https://img.icons8.com/office/80/000000/clock.png';
     const iconLocationUrl = 'https://img.icons8.com/ultraviolet/80/000000/worldwide-location.png';
-    const eventDateTime = `${event.date} - ${event.time.slice(11, 16)}`;
+    const eventDateTime = `${event.date} - ${ConvertTime(event.time)}`;
     const textButton = attendee ? 'Remove from your events' : 'Add to your events';
     return (
       <StyleRoot>
