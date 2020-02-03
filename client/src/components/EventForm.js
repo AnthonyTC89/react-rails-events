@@ -115,14 +115,14 @@ class EventForm extends React.Component {
             minLength="4"
             required
           />
-          <input
+          <textarea
             className="form-control"
             onChange={this.handleChange}
-            type="text"
             placeholder="description"
             value={description}
             name="description"
             minLength="4"
+            rows="4"
             required
           />
           <input
@@ -141,6 +141,7 @@ class EventForm extends React.Component {
             placeholder="time"
             value={time}
             name="time"
+            required
           />
           <input
             className="form-control"
@@ -149,6 +150,7 @@ class EventForm extends React.Component {
             placeholder="location"
             value={location}
             name="location"
+            required
           />
           <ul className="text-success">
             {messages.map((msg) => <li key={uuidv4()}><small>{msg}</small></li>)}
