@@ -1,0 +1,15 @@
+.user-card, .event-card{
+  width: 14rem;
+  cursor: pointer;
+}
+.card-body {
+  text-align: left;
+  padding: 1rem;
+}
+.card-subtitle {
+  display: flex;
+  justify-content: space-around;
+}
+p {
+  display: inline;
+}
