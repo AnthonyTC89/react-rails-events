@@ -13,13 +13,17 @@
   </p>
 </p>
 
+![Screenshot](/screenshots/01.png)
+![Screenshot](/screenshots/02.png)
 
 <!-- TABLE OF CONTENTS -->
 ## Table of Contents
 
 * [About the Project](#about-the-project)
+* [Main Features](#main-features)
 * [Built With](#built-with)
 * [Installation](#installation)
+* [Contact](#Contact)
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
@@ -31,6 +35,8 @@ This App is designed for mobile, but it's possible to use in Desktop.
 The purpose is to get:
 - A real-world-like project, built with business specifications.
 - Get feedback about the achievement of technical and soft skills.
+
+### Main Features
 
 The following are actions that can be done on the application.
   1. Create an Account and Login in to the App. 
