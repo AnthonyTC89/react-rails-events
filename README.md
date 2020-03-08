@@ -23,6 +23,7 @@
 * [Main Features](#main-features)
 * [Built With](#built-with)
 * [Installation](#installation)
+* [Testing](#testing)
 * [Contact](#Contact)
 
 <!-- ABOUT THE PROJECT -->
@@ -79,6 +80,11 @@ The following are actions that can be done on the application.
   4. Run: `CREATE USER rails with encrypted password 'rails';` (with semicolon)
   5. Run: `ALTER USER rails createdb;` 
 
+### Testing 
+
+  1. For the Back-End (RailsAPI): In the root folder run `rails spec`
+  2. For the Front-End (ReactJS): In the client folder run: `npm test`
+  
 ### Contact
 
 * **[Anthony Tapia Cossio](https://github.com/AnthonyTC89) - [Linkedin](linkedin.com/in/anthony-tapia-cossio) - [Twitter](https://twitter.com/ptonypTC)**
