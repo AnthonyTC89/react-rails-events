@@ -24,6 +24,7 @@
 * [Built With](#built-with)
 * [Installation](#installation)
 * [Testing](#testing)
+* [Future Features](#Future-Features)
 * [Contact](#Contact)
 
 <!-- ABOUT THE PROJECT -->
@@ -84,7 +85,14 @@ The following are actions that can be done on the application.
 
   1. For the Back-End (RailsAPI): In the root folder run `rails spec`
   2. For the Front-End (ReactJS): In the client folder run: `npm test`
-  
+
+### Future Features 
+
+  1. Use AWS Store to include Images in events.
+  2. Notifications on dashboard.
+  3. Create a feedback screen.
+  4. Improve styling. 
+
 ### Contact
 
 * **[Anthony Tapia Cossio](https://github.com/AnthonyTC89) - [Linkedin](linkedin.com/in/anthony-tapia-cossio) - [Twitter](https://twitter.com/ptonypTC)**
